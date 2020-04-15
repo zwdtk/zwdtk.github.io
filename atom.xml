@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-04-15T05:57:03.419Z</updated>
+  <updated>2020-04-15T06:12:20.856Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>first attack</title>
+    <link href="zwdtk.github.io/2020/04/15/first-attack/"/>
+    <id>zwdtk.github.io/2020/04/15/first-attack/</id>
+    <published>2020-04-15T06:12:20.000Z</published>
+    <updated>2020-04-15T06:12:20.856Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;script&gt;
+        document.querySelectorAll(&#39;.github-emoji&#39;)
+          .forEach(el =&gt; {
+            if (!el.dataset.src) { return; }
+       
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>第一次攻击实验</title>
