@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-04-15T11:10:24.220Z</updated>
+  <updated>2020-04-17T15:00:37.346Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="zwdtk.github.io/2020/04/15/ok/"/>
     <id>zwdtk.github.io/2020/04/15/ok/</id>
     <published>2020-04-15T01:56:22.000Z</published>
-    <updated>2020-04-15T11:10:24.220Z</updated>
+    <updated>2020-04-17T15:00:37.346Z</updated>
     
     <summary type="html">
     
@@ -29,8 +29,8 @@
       
         
         
-          &lt;p&gt;(准备阶段，win7虚拟机，kali linux系统)&lt;br&gt;实验声明:网络不是法外之地~~&lt;/p&gt;
-&lt;h3 id=&quot;开始&quot;&gt;&lt;a href=&quot;#开始&quot; class=&quot;headerlink&quot; title=&quot;开始&quot;&gt;&lt;/a&gt;开始&lt;/h3&gt;&lt;p&gt;初次使用 –&amp;gt;
+          &lt;p&gt;实验:metasploit下利用”永恒之蓝”攻击win7&lt;br&gt;(准备阶段，win7虚拟机，kali linux系统)&lt;br&gt;实验声明:网络不是法外之地~~&lt;/p&gt;
+&lt;h3 id=&quot;开始&quot;&gt;&lt;a href=&quot;#开始&quot; class=&quot;headerlink&quot;
         
       
     
@@ -38,9 +38,7 @@
     
     
     
-      <category term="Typora" scheme="zwdtk.github.io/tags/Typora/"/>
-    
-      <category term="Markdown" scheme="zwdtk.github.io/tags/Markdown/"/>
+      <category term="experiment" scheme="zwdtk.github.io/tags/experiment/"/>
     
   </entry>
   
