@@ -456,7 +456,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    442
+                    441
                 </div>
                 
 
@@ -473,7 +473,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="Linux系统搭建配置-1-软件入门（真-·-水文章）-yum"><a href="#Linux系统搭建配置-1-软件入门（真-·-水文章）-yum" class="headerlink" title="Linux系统搭建配置 1.. 软件入门（真 · 水文章）:yum:"></a>Linux系统搭建配置 1.. 软件入门（真 · 水文章）:yum:</h3><p>（以Ubuntu为例）</p>
+                <h3 id="Linux系统搭建配置-1-软件入门（真-·-水文章）"><a href="#Linux系统搭建配置-1-软件入门（真-·-水文章）" class="headerlink" title="Linux系统搭建配置 1.. 软件入门（真 · 水文章）"></a>Linux系统搭建配置 1.. 软件入门（真 · 水文章）</h3><p>（以Ubuntu为例）</p>
 <h4 id="搭建SSH服务"><a href="#搭建SSH服务" class="headerlink" title="搭建SSH服务"></a>搭建SSH服务</h4><h6 id="1、安装ssh服务"><a href="#1、安装ssh服务" class="headerlink" title="1、安装ssh服务"></a>1、安装ssh服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">ssh</span></code></pre>
 <h6 id="2、启动-停止-查看服务"><a href="#2、启动-停止-查看服务" class="headerlink" title="2、启动/停止/查看服务"></a>2、启动/停止/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> <span class="token function">ssh</span> start/stop/status</code></pre>
 <h6 id="3、配置ssh服务"><a href="#3、配置ssh服务" class="headerlink" title="3、配置ssh服务"></a>3、配置ssh服务</h6><p>/etc/ssh/sshd_config<br><strong><em>一般使用环境</em></strong></p>
@@ -485,20 +485,35 @@
 <hr>
 <h4 id="搭建apache服务"><a href="#搭建apache服务" class="headerlink" title="搭建apache服务"></a>搭建apache服务</h4><h6 id="1、安装apache服务"><a href="#1、安装apache服务" class="headerlink" title="1、安装apache服务"></a>1、安装apache服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> apache2</code></pre>
 <h6 id="2、启动-停止-查看服务-1"><a href="#2、启动-停止-查看服务-1" class="headerlink" title="2、启动/停止/查看服务"></a>2、启动/停止/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> apache2 start/stop/status</code></pre>
-<h6 id="3、配置apache服务"><a href="#3、配置apache服务" class="headerlink" title="3、配置apache服务"></a>3、配置apache服务</h6><p>/etc/apache2/apache2.conf（主配置文件）<br>/etc/apache2/conf-<em>（其余配置文件）<br>/etc/apache2/sites-</em>（虚拟主机配置文件）<br><strong><em>常用命令</em></strong></p>
+<h6 id="3、配置apache服务"><a href="#3、配置apache服务" class="headerlink" title="3、配置apache服务"></a>3、配置apache服务</h6><ul>
+<li>/etc/apache2/apache2.conf（主配置文件）</li>
+<li>/etc/apache2/conf-*（其余配置文件）</li>
+<li>/etc/apache2/sites-*（虚拟主机配置文件）</li>
+</ul>
+<p><strong><em>常用命令</em></strong></p>
 <pre class=" language-bash"><code class="language-bash">$ a2 + disconf/dismod/dissite/enconf/enmod/ensite/<span class="token punctuation">..</span>.</code></pre>
 <hr>
 <h4 id="搭建mysql服务"><a href="#搭建mysql服务" class="headerlink" title="搭建mysql服务"></a>搭建mysql服务</h4><h6 id="1、安装mysql"><a href="#1、安装mysql" class="headerlink" title="1、安装mysql"></a>1、安装mysql</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> mysql-server mysql-client</code></pre>
 <h6 id="2、启动-暂停-查看服务"><a href="#2、启动-暂停-查看服务" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> mysql start/stop/status</code></pre>
-<h6 id="3、配置mysql服务"><a href="#3、配置mysql服务" class="headerlink" title="3、配置mysql服务"></a>3、配置mysql服务</h6><p>/etc/mysql/mysql.conf.d/mysqld.cnf（配置文件）<br>常用配置项 -&gt; bind-address（设置mysql请求的ip）</p>
+<h6 id="3、配置mysql服务"><a href="#3、配置mysql服务" class="headerlink" title="3、配置mysql服务"></a>3、配置mysql服务</h6><ul>
+<li>/etc/mysql/mysql.conf.d/mysqld.cnf（配置文件）</li>
+<li>常用配置项 -&gt; bind-address（设置mysql请求的ip）</li>
+</ul>
 <h6 id="4、进入mysql命令行模式"><a href="#4、进入mysql命令行模式" class="headerlink" title="4、进入mysql命令行模式"></a>4、进入mysql命令行模式</h6><pre class=" language-bash"><code class="language-bash">$ musql -u 用户名 -p</code></pre>
 <hr>
 <h4 id="Docker（镜像-容器-仓库）"><a href="#Docker（镜像-容器-仓库）" class="headerlink" title="Docker（镜像+容器+仓库）"></a>Docker（镜像+容器+仓库）</h4><h6 id="1、安装docker"><a href="#1、安装docker" class="headerlink" title="1、安装docker"></a>1、安装docker</h6><p><strong><em>具体指令可直接网上查找</em></strong><br>此处用的是kali系统下安装，可参考下帖（表示很喜欢里面的仓鼠）<br>More: <a href="https://www.cnblogs.com/L0ading/p/12312413.html" target="_blank" rel="noopener">https://www.cnblogs.com/L0ading/p/12312413.html</a></p>
 <h6 id="2、启动-暂停-查看服务-1"><a href="#2、启动-暂停-查看服务-1" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> docker start/stop/status</code></pre>
 <h6 id="3、Docker跑起？"><a href="#3、Docker跑起？" class="headerlink" title="3、Docker跑起？"></a>3、Docker跑起？</h6><pre class=" language-bash"><code class="language-bash">$ docker run --itd --name myname -p 8080:80 ubuntu</code></pre>
-<p>-it    给予一个交互式操作终端<br>-d     后台运行<br>–name 容器名称<br>-p     端口映射</p>
+<ul>
+<li>-it    给予一个交互式操作终端</li>
+<li>-d     后台运行</li>
+<li>–name 容器名称</li>
+<li>-p     端口映射</li>
+</ul>
 <h6 id="4、进入docker命令行模式"><a href="#4、进入docker命令行模式" class="headerlink" title="4、进入docker命令行模式"></a>4、进入docker命令行模式</h6><pre class=" language-bash"><code class="language-bash">$ docker <span class="token function">exec</span> -it myname <span class="token function">pwd</span></code></pre>
-<p>-it    给予一个交互式终端执行命令</p>
+<ul>
+<li>-it    给予一个交互式终端执行命令</li>
+</ul>
 <p><strong>（到时再补补细节，估计又双叒叕要拖一下下了）</strong></p>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -767,9 +782,9 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Linux系统搭建配置 1.. 软件入门（真 · 水文章）:yum:（以Ubuntu为例）
+                            Linux系统搭建配置 1.. 软件入门（真 · 水文章）（以Ubuntu为例）
 搭建SSH服务1、安装ssh服务$ apt-get install ssh
-2、启动/停止/查看服务$ service ssh start/stop
+2、启动/停止/查看服务$ service ssh start/stop/stat
                         
                     </div>
                     <div class="publish-info">
@@ -1063,7 +1078,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
-    <div class="container row center-align" style="margin-bottom: 0px !important;">
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             <span id="year">2020</span>
@@ -1073,25 +1088,69 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">862</span>&nbsp;字
+                class="white-color">861</span>&nbsp;字
             
             
             
             
             
             
-            <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_container_site_pv" style='display:none'>
                 |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
                     class="white-color"></span>&nbsp;次
             </span>
             
             
-            <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_container_site_uv" style='display:none'>
                 |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
                     class="white-color"></span>&nbsp;人
             </span>
             
             <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2020";
+                    var startMonth = "4";
+                    var startDate = "2";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已勉强运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒ღゝ◡╹)ノ♡";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已勉强运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒ღゝ◡╹)ノ♡";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
             
             <br>
             
@@ -1132,6 +1191,26 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </footer>
 
 <div class="progress-bar"></div>
+
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+        var pvcountOffset = 80000;  // 初始化首次数据
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测
+            }
+        }
+    });
+</script>
 
 
     <!-- 搜索遮罩框 -->
