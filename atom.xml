@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-04-21T11:33:01.575Z</updated>
+  <updated>2020-04-27T09:29:52.919Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>note_1</title>
-    <link href="zwdtk.github.io/2020/04/21/note-1/"/>
-    <id>zwdtk.github.io/2020/04/21/note-1/</id>
-    <published>2020-04-21T11:33:01.000Z</published>
-    <updated>2020-04-21T11:33:01.575Z</updated>
+    <link href="zwdtk.github.io/2020/04/27/note-1/"/>
+    <id>zwdtk.github.io/2020/04/27/note-1/</id>
+    <published>2020-04-27T11:33:01.000Z</published>
+    <updated>2020-04-27T09:29:52.919Z</updated>
     
     <summary type="html">
     
@@ -29,11 +29,7 @@
       
         
         
-          &lt;script&gt;
-        document.querySelectorAll(&#39;.github-emoji&#39;)
-          .forEach(el =&gt; {
-            if (!el.dataset.src) { return; }
-       
+          &lt;h3 id=&quot;Linux系统搭建配置-1-软件&quot;&gt;&lt;a href=&quot;#Linux系统搭建配置-1-软件&quot; class=&quot;headerlink&quot; title=&quot;Linux系统搭建配置 1.. 软件&quot;&gt;&lt;/a&gt;Linux系统搭建配置 1..
         
       
     
