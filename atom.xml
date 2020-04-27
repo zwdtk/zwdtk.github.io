@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-04-27T09:29:52.919Z</updated>
+  <updated>2020-04-27T09:33:31.531Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="zwdtk.github.io/2020/04/27/note-1/"/>
     <id>zwdtk.github.io/2020/04/27/note-1/</id>
     <published>2020-04-27T11:33:01.000Z</published>
-    <updated>2020-04-27T09:29:52.919Z</updated>
+    <updated>2020-04-27T09:33:31.531Z</updated>
     
     <summary type="html">
     
@@ -36,6 +36,8 @@
     </summary>
     
     
+    
+      <category term="Linux" scheme="zwdtk.github.io/tags/Linux/"/>
     
   </entry>
   
