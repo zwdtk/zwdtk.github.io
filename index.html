@@ -493,7 +493,7 @@
         }
 
         coverSlider.carousel({
-            duration: Number('120'),
+            duration: Number('150'),
             fullWidth: true,
             indicators: 'true' === 'true',
             onCycleTo() {
@@ -511,7 +511,7 @@
         let autoCarousel = function () {
             carouselIntervalId = setInterval(function () {
                 coverSlider.carousel('next');
-            }, 5000);
+            }, 7500);
         };
         autoCarousel();
         
@@ -808,6 +808,9 @@
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">861</span>&nbsp;字
             
             
             
