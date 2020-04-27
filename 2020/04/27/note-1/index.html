@@ -471,7 +471,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="Linux系统搭建配置-1-软件入门-sleeping"><a href="#Linux系统搭建配置-1-软件入门-sleeping" class="headerlink" title="Linux系统搭建配置 1.. 软件入门 :sleeping:"></a>Linux系统搭建配置 1.. 软件入门 :sleeping:</h3><p>（以Ubuntu为例）<br>（不知做什莫好，水文章了，细节要过段时间整理 :hear_no_evil:）</p>
+                <h3 id="Linux系统搭建配置-1-软件入门（真-·-水文章）"><a href="#Linux系统搭建配置-1-软件入门（真-·-水文章）" class="headerlink" title="Linux系统搭建配置 1.. 软件入门（真 · 水文章）"></a>Linux系统搭建配置 1.. 软件入门（真 · 水文章）</h3><p>（以Ubuntu为例）</p>
 <h3 id="搭建SSH服务-wink"><a href="#搭建SSH服务-wink" class="headerlink" title="搭建SSH服务 :wink:"></a>搭建SSH服务 :wink:</h3><h5 id="1、安装ssh服务"><a href="#1、安装ssh服务" class="headerlink" title="1、安装ssh服务"></a>1、安装ssh服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">ssh</span></code></pre>
 <h5 id="2、启动-停止-查看服务"><a href="#2、启动-停止-查看服务" class="headerlink" title="2、启动/停止/查看服务"></a>2、启动/停止/查看服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> <span class="token function">ssh</span> start/stop/status</code></pre>
 <h5 id="3、配置ssh服务"><a href="#3、配置ssh服务" class="headerlink" title="3、配置ssh服务"></a>3、配置ssh服务</h5><p>/etc/ssh/sshd_config<br><strong><em>一般使用环境</em></strong></p>
@@ -480,21 +480,24 @@
 <li>只允许证书方式登录</li>
 <li>更改ssh端口</li>
 </ul>
-<h3 id="搭建apache服务-flushed"><a href="#搭建apache服务-flushed" class="headerlink" title="搭建apache服务 :flushed:"></a>搭建apache服务 :flushed:</h3><h5 id="1、安装apache服务"><a href="#1、安装apache服务" class="headerlink" title="1、安装apache服务"></a>1、安装apache服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> apache2</code></pre>
-<h5 id="2、启动-停止-查看服务-1"><a href="#2、启动-停止-查看服务-1" class="headerlink" title="2、启动/停止/查看服务"></a>2、启动/停止/查看服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> apache2 start/stop/status</code></pre>
-<h5 id="3、配置apache服务"><a href="#3、配置apache服务" class="headerlink" title="3、配置apache服务"></a>3、配置apache服务</h5><p>/etc/apache2/apache2.conf（主配置文件）<br>/etc/apache2/conf-<em>（其余配置文件）<br>/etc/apache2/sites-</em>（虚拟主机配置文件）<br><strong><em>常用命令</em></strong></p>
+<hr>
+<h4 id="搭建apache服务"><a href="#搭建apache服务" class="headerlink" title="搭建apache服务"></a>搭建apache服务</h4><h6 id="1、安装apache服务"><a href="#1、安装apache服务" class="headerlink" title="1、安装apache服务"></a>1、安装apache服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> apache2</code></pre>
+<h6 id="2、启动-停止-查看服务-1"><a href="#2、启动-停止-查看服务-1" class="headerlink" title="2、启动/停止/查看服务"></a>2、启动/停止/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> apache2 start/stop/status</code></pre>
+<h6 id="3、配置apache服务"><a href="#3、配置apache服务" class="headerlink" title="3、配置apache服务"></a>3、配置apache服务</h6><p>/etc/apache2/apache2.conf（主配置文件）<br>/etc/apache2/conf-<em>（其余配置文件）<br>/etc/apache2/sites-</em>（虚拟主机配置文件）<br><strong><em>常用命令</em></strong></p>
 <pre class=" language-bash"><code class="language-bash">$ a2 + disconf/dismod/dissite/enconf/enmod/ensite/<span class="token punctuation">..</span>.</code></pre>
-<h3 id="搭建mysql服务-kissing"><a href="#搭建mysql服务-kissing" class="headerlink" title="搭建mysql服务 :kissing:"></a>搭建mysql服务 :kissing:</h3><h5 id="1、安装mysql"><a href="#1、安装mysql" class="headerlink" title="1、安装mysql"></a>1、安装mysql</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> mysql-server mysql-client</code></pre>
-<h5 id="2、启动-暂停-查看服务"><a href="#2、启动-暂停-查看服务" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> mysql start/stop/status</code></pre>
-<h5 id="3、配置mysql服务"><a href="#3、配置mysql服务" class="headerlink" title="3、配置mysql服务"></a>3、配置mysql服务</h5><p>/etc/mysql/mysql.conf.d/mysqld.cnf（配置文件）<br>常用配置项 -&gt; bind-address（设置mysql请求的ip）</p>
-<h5 id="4、进入mysql命令行模式"><a href="#4、进入mysql命令行模式" class="headerlink" title="4、进入mysql命令行模式"></a>4、进入mysql命令行模式</h5><pre class=" language-bash"><code class="language-bash">$ musql -u 用户名 -p</code></pre>
-<h3 id="Docker（镜像-容器-仓库）-kissing-heart"><a href="#Docker（镜像-容器-仓库）-kissing-heart" class="headerlink" title="Docker（镜像+容器+仓库） :kissing_heart:"></a>Docker（镜像+容器+仓库） :kissing_heart:</h3><h5 id="1、安装docker"><a href="#1、安装docker" class="headerlink" title="1、安装docker"></a>1、安装docker</h5><p><strong><em>具体指令可直接网上查找</em></strong><br>此处用的是kali系统下安装，可参考下帖（表示很喜欢里面的仓鼠）<br>More: <a href="https://www.cnblogs.com/L0ading/p/12312413.html" target="_blank" rel="noopener">https://www.cnblogs.com/L0ading/p/12312413.html</a></p>
-<h5 id="2、启动-暂停-查看服务-1"><a href="#2、启动-暂停-查看服务-1" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h5><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> docker start/stop/status</code></pre>
-<h5 id="3、Docker跑起？"><a href="#3、Docker跑起？" class="headerlink" title="3、Docker跑起？"></a>3、Docker跑起？</h5><pre class=" language-bash"><code class="language-bash">$ docker run --itd --name myname -p 8080:80 ubuntu</code></pre>
+<hr>
+<h4 id="搭建mysql服务"><a href="#搭建mysql服务" class="headerlink" title="搭建mysql服务"></a>搭建mysql服务</h4><h6 id="1、安装mysql"><a href="#1、安装mysql" class="headerlink" title="1、安装mysql"></a>1、安装mysql</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">apt-get</span> <span class="token function">install</span> mysql-server mysql-client</code></pre>
+<h6 id="2、启动-暂停-查看服务"><a href="#2、启动-暂停-查看服务" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> mysql start/stop/status</code></pre>
+<h6 id="3、配置mysql服务"><a href="#3、配置mysql服务" class="headerlink" title="3、配置mysql服务"></a>3、配置mysql服务</h6><p>/etc/mysql/mysql.conf.d/mysqld.cnf（配置文件）<br>常用配置项 -&gt; bind-address（设置mysql请求的ip）</p>
+<h6 id="4、进入mysql命令行模式"><a href="#4、进入mysql命令行模式" class="headerlink" title="4、进入mysql命令行模式"></a>4、进入mysql命令行模式</h6><pre class=" language-bash"><code class="language-bash">$ musql -u 用户名 -p</code></pre>
+<hr>
+<h4 id="Docker（镜像-容器-仓库）"><a href="#Docker（镜像-容器-仓库）" class="headerlink" title="Docker（镜像+容器+仓库）"></a>Docker（镜像+容器+仓库）</h4><h6 id="1、安装docker"><a href="#1、安装docker" class="headerlink" title="1、安装docker"></a>1、安装docker</h6><p><strong><em>具体指令可直接网上查找</em></strong><br>此处用的是kali系统下安装，可参考下帖（表示很喜欢里面的仓鼠）<br>More: <a href="https://www.cnblogs.com/L0ading/p/12312413.html" target="_blank" rel="noopener">https://www.cnblogs.com/L0ading/p/12312413.html</a></p>
+<h6 id="2、启动-暂停-查看服务-1"><a href="#2、启动-暂停-查看服务-1" class="headerlink" title="2、启动/暂停/查看服务"></a>2、启动/暂停/查看服务</h6><pre class=" language-bash"><code class="language-bash">$ <span class="token function">service</span> docker start/stop/status</code></pre>
+<h6 id="3、Docker跑起？"><a href="#3、Docker跑起？" class="headerlink" title="3、Docker跑起？"></a>3、Docker跑起？</h6><pre class=" language-bash"><code class="language-bash">$ docker run --itd --name myname -p 8080:80 ubuntu</code></pre>
 <p>-it    给予一个交互式操作终端<br>-d     后台运行<br>–name 容器名称<br>-p     端口映射</p>
-<h5 id="4、进入docker命令行模式"><a href="#4、进入docker命令行模式" class="headerlink" title="4、进入docker命令行模式"></a>4、进入docker命令行模式</h5><pre class=" language-bash"><code class="language-bash">$ docker <span class="token function">exec</span> -it myname <span class="token function">pwd</span></code></pre>
+<h6 id="4、进入docker命令行模式"><a href="#4、进入docker命令行模式" class="headerlink" title="4、进入docker命令行模式"></a>4、进入docker命令行模式</h6><pre class=" language-bash"><code class="language-bash">$ docker <span class="token function">exec</span> -it myname <span class="token function">pwd</span></code></pre>
 <p>-it    给予一个交互式终端执行命令</p>
-<p>（细节又双叒叕要拖 1 \downarrow \downarrow 了）</p>
+<p><strong>（到时再补补细节，估计又双叒叕要拖一下下了）</strong></p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -762,8 +765,9 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Linux系统搭建配置 1.. 软件入门 :sleeping:（以Ubuntu为例）（不知做什莫好，水文章了，细节要过段时间整理 :hear_no_evil:）
-搭建SSH服务 :wink:1、安装ssh服务$ apt-get instal
+                            Linux系统搭建配置 1.. 软件入门（真 · 水文章）（以Ubuntu为例）
+搭建SSH服务 :wink:1、安装ssh服务$ apt-get install ssh
+2、启动/停止/查看服务$ service ssh start/st
                         
                     </div>
                     <div class="publish-info">
