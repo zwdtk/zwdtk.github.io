@@ -5,9 +5,9 @@
   <subtitle>Q Q rious~ Day Day up~</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="zwdtk.github.io/"/>
+  <link href="https://zwdtk.github.io/"/>
   <updated>2020-04-27T11:26:14.470Z</updated>
-  <id>zwdtk.github.io/</id>
+  <id>https://zwdtk.github.io/</id>
   
   <author>
     <name>zwdtk</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>note_1</title>
-    <link href="zwdtk.github.io/2020/04/27/note-1/"/>
-    <id>zwdtk.github.io/2020/04/27/note-1/</id>
+    <link href="https://zwdtk.github.io/2020/04/27/note-1/"/>
+    <id>https://zwdtk.github.io/2020/04/27/note-1/</id>
     <published>2020-04-27T11:33:01.000Z</published>
     <updated>2020-04-27T11:26:14.470Z</updated>
     
@@ -37,14 +37,14 @@
     
     
     
-      <category term="Linux" scheme="zwdtk.github.io/tags/Linux/"/>
+      <category term="Linux" scheme="https://zwdtk.github.io/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>第一次攻击实验</title>
-    <link href="zwdtk.github.io/2020/04/15/ok/"/>
-    <id>zwdtk.github.io/2020/04/15/ok/</id>
+    <link href="https://zwdtk.github.io/2020/04/15/ok/"/>
+    <id>https://zwdtk.github.io/2020/04/15/ok/</id>
     <published>2020-04-15T01:56:22.000Z</published>
     <updated>2020-04-17T15:00:37.346Z</updated>
     
@@ -63,14 +63,14 @@
     
     
     
-      <category term="experiment" scheme="zwdtk.github.io/tags/experiment/"/>
+      <category term="experiment" scheme="https://zwdtk.github.io/tags/experiment/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="zwdtk.github.io/2020/04/02/hello-world/"/>
-    <id>zwdtk.github.io/2020/04/02/hello-world/</id>
+    <link href="https://zwdtk.github.io/2020/04/02/hello-world/"/>
+    <id>https://zwdtk.github.io/2020/04/02/hello-world/</id>
     <published>2020-04-02T09:27:31.570Z</published>
     <updated>2020-04-02T09:27:31.570Z</updated>
     
