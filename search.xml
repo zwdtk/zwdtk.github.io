@@ -12,9 +12,12 @@
 <li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，为啥有个远大于号？）<h4 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h4>（1）目标上找输入点，“见框就插”，比如查询接口、留言板啥的<br>（2）输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理<br>（3）构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件<br>（4）提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞</li>
 </ul>
 <p>以下是在pikachu（皮卡丘）漏洞平台瞎捣鼓的小实验，一起来搞啊</p>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h3><p>“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下<br><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code><br>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下了，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="Cross-Site-Scripting"><a href="#Cross-Site-Scripting" class="headerlink" title="Cross-Site Scripting"></a>Cross-Site Scripting</h3><h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><p>“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下</p>
 <ul>
-<li><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong><h3 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h3></li>
+<li><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code><br>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下了，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</li>
+<li><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong><h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4>（后期补充）<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4></li>
+<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>接下来查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试</li>
+<li><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code><br><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大</li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -38,38 +41,6 @@
       <tags>
         <tag>XSS</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/04/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
   </entry>
   <entry>
     <title>note_1</title>
@@ -138,6 +109,38 @@
       <tags>
         <tag>Linux</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/04/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
   </entry>
   <entry>
     <title>第一次攻击实验</title>
