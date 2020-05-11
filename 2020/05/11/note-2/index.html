@@ -456,14 +456,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.6k
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    5 Min
+                    6 Min
                 </div>
                 
 
@@ -489,13 +489,19 @@
 </ul>
 <hr>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>皮卡丘平台有很多很多（烤面筋~）瞎说，有很多漏洞类型的实验，这次选用<code>Cross-Site Scripting</code>进行</p>
-<h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><p>“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下</p>
-<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><p>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下了，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</p>
-<ul>
-<li><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong><h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4>（后期补充）<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4></li>
-<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>接下来查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4></li>
+<h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><ol>
+<li>“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""></li>
+<li>看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre></li>
+<li>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</li>
+</ol>
+<p><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong></p>
+<h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4><p>这过下次，下次一定（后期补充）</p>
+<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4><ul>
+<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong></li>
 </ul>
 <ol>
+<li>我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""></li>
+<li>只能查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4></li>
 <li>可以将DOM理解为访问HTML的标准接口，而DOM里面会把我们的HTML分成一个DOM树，以这棵树为入口，通过DOM的某些方法对树进行操作（增删改标签啥的），所以DOM也相当于在前端提供了一个<strong>通过JS去对HTML进行操作的接口</strong></li>
 <li>而造成DOM型XSS的原因则是前端的输入被DOM给获取到了，通过DOM又在前端输出，跟反射型和存储型比起来，它是不经过后台交互的</li>
 <li>等等？快进入正题，不能瞎扯<br>依然是老套路，上去先插一小段特殊字符提交一下，what do you see?又是跳转403，又是没反应的，决定观察页面源码，找到<strong>xssd_main</strong>部分<br><img src="https://s1.ax1x.com/2020/05/11/YYE39S.png" alt=""></li>
@@ -507,7 +513,11 @@
 <li><strong>请说出宁的伤心往事？</strong>随缘输入一段内容，出现一可选项，click一下，又来一个，click第两下，啥？404了，莫得想法了，查看源码<br><img src="https://s1.ax1x.com/2020/05/11/YYuA9P.png" alt=""></li>
 <li>又来到了分析时间（我拒绝，不是），看到<strong>xssd_main</strong>里面那段JS代码，一个domxss函数，利用<strong>window.location.search</strong>获取浏览器URL内容， 赋值到str，ok下面不会了，游戏结束</li>
 <li>（港咩啊，查查呗）然后是经过URL解码和字符串分隔，取出URL中的参数内容，再把 “+” 替换为 “ ”（空格），赋值给 xss，最后把 xss 拼接到 a 标签中，然后写到 Id 为 dom 的 div 标签中，<strong>来了划重点</strong>: 跟前面的DOM不同，它的输入是从浏览器的URL中获取的，就像反射型XSS(get)</li>
-<li><strong>通过闭合方式</strong>构造payload，比如<pre><code>#' onclick=alert("求求宁给俺弹个窗吧")&gt;</code></pre>口中默念，3、2、1、点火起飞（瞎说啥），成功弹窗了<br><img src="https://s1.ax1x.com/2020/05/11/YYM9JI.png" alt=""></li>
+<li><strong>通过闭合方式</strong>构造payload，比如<pre><code>#' onclick=alert("求求宁给俺弹个窗吧")&gt;</code></pre>口中默念，3、2、1、点火起飞（瞎说啥），成功弹窗了<br><img src="https://s1.ax1x.com/2020/05/11/YYM9JI.png" alt=""><h4 id="XSS之盲打"><a href="#XSS之盲打" class="headerlink" title="XSS之盲打"></a>XSS之盲打</h4></li>
+<li>好的我们看到了个友情提问，我们来个友情回答，提交后，就这？<br><img src="https://s1.ax1x.com/2020/05/11/YYQ04s.png" alt=""></li>
+<li>（真是让人摸不着头脑）想想看，我们输入的内容不在前端输出，应该是提交到了后端，那…要是输入一段JS代码，而且存在XSS漏洞，后端管理员登录后是不是会看到弹窗了？试试构造payload<pre><code>&lt;script&gt;alert("咯噔一下弹出来")&lt;/script&gt;</code></pre></li>
+<li>因为是实验，咱们当一回管理员，登录后台管理界面看看，登录方法平台有提示，主要就是先进入<code>http://xxx.xxx.xxx.xxx/pikachu/vul/xss/xssblind/admin_login.php</code>（端口、文件名啥的根据实际情况改一下就可以进入了，然后根据提示的账号密码登录管理员）</li>
+<li>（咯噔一下，弹窗了）这…谁顶得住啊<br><img src="https://s1.ax1x.com/2020/05/11/YYGllR.png" alt=""></li>
 </ol>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -1082,7 +1092,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">2.4k</span>&nbsp;字
+                class="white-color">2.7k</span>&nbsp;字
             
             
             
