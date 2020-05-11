@@ -497,8 +497,10 @@
 <li>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</li>
 </ol>
 <p><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong></p>
-<h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4><p>这过下次，下次一定（后期补充）</p>
-<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4><ul>
+<h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4><ol>
+<li>这过下次，下次一定（后期补充）<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4></li>
+</ol>
+<ul>
 <li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong></li>
 </ul>
 <ol>
