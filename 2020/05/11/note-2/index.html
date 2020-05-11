@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/XSS/">
+                                <span class="chip bg-color">XSS</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -452,14 +456,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    52
+                    587
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    2 Min
                 </div>
                 
 
@@ -475,7 +479,15 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <script>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户访问这个页面时，这个恶意的JS代码就会在用户的浏览器端执行。<br>主要原因: 程序中输入和输出的控制不够严格</p>
+<h3 id="XSS攻击类型"><a href="#XSS攻击类型" class="headerlink" title="XSS攻击类型"></a>XSS攻击类型</h3><ul>
+<li>反射型: 又被称为非持久性、参数型XSS。常见的XSS攻击，恶意代码通常在URL地址的请求参数中，且交互的数据一般不会被存在数据库里面，一次性。</li>
+<li>存储型: 又被称为持久型XSS，相比于反射型XSS，其危害性更大大大大大大，甚至可能危害Web服务器本身的安全。常见于评论区、留言，即交互的数据会被存在数据库里面，永久性存储（我慌了，你呢？）</li>
+<li>DOM型: 基于文档对象模型的一种漏洞，是一种通过DOM操作前端代码输出的时候产生的问题，不与后台服务器产生数据交互，一次性，也属于反射型</li>
+<li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，里面有个远大于号？）<h3 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h3>(1)目标上找输入点，“见框就插”，比如查询接口、留言板啥的;<br>(2)输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理;<br>(3)构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件;<br>(4)提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞;</li>
+</ul>
+<p>以下是在pikachu（皮卡丘）漏洞平台进行的小实验，一起来搞啊</p>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -508,7 +520,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">zwdtk</a>
+                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">丝滑纵享德芙</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -531,7 +543,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint polocy. If reproduced, please indicate source
-                    <a href="zwdtk.github.io" target="_blank">zwdtk</a>
+                    <a href="zwdtk.github.io" target="_blank">丝滑纵享德芙</a>
                     !
                 </span>
             </div>
@@ -555,7 +567,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/XSS/">
+                                    <span class="chip bg-color">XSS</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -738,10 +754,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return
+                            概述简介XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户访
                         
                     </div>
                     <div class="publish-info">
@@ -751,12 +764,20 @@
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            zwdtk
+                            丝滑纵享德芙
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1038,7 +1059,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">913</span>&nbsp;字
+                class="white-color">1.4k</span>&nbsp;字
             
             
             

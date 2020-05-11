@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-05-11T07:34:10.729Z</updated>
+  <updated>2020-05-11T08:11:27.083Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="zwdtk.github.io/2020/05/11/note-2/"/>
     <id>zwdtk.github.io/2020/05/11/note-2/</id>
     <published>2020-05-11T07:34:10.000Z</published>
-    <updated>2020-05-11T07:34:10.729Z</updated>
+    <updated>2020-05-11T08:11:27.083Z</updated>
     
     <summary type="html">
     
@@ -29,17 +29,15 @@
       
         
         
-          &lt;script&gt;
-        document.querySelectorAll(&#39;.github-emoji&#39;)
-          .forEach(el =&gt; {
-            if (!el.dataset.src) { return; }
-       
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;h3 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;
         
       
     
     </summary>
     
     
+    
+      <category term="XSS" scheme="zwdtk.github.io/tags/XSS/"/>
     
   </entry>
   
