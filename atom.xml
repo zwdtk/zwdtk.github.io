@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zwdtk.github.io/"/>
-  <updated>2020-05-13T04:09:57.648Z</updated>
+  <updated>2020-05-13T15:09:35.824Z</updated>
   <id>zwdtk.github.io/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>pikachu漏洞练习平台实验--文件漏洞</title>
+    <link href="zwdtk.github.io/2020/05/15/note-4/"/>
+    <id>zwdtk.github.io/2020/05/15/note-4/</id>
+    <published>2020-05-15T14:34:05.000Z</published>
+    <updated>2020-05-13T15:09:35.824Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;File-Inclusion（文件包含漏洞）&quot;&gt;&lt;a href=&quot;#File-Inclusion（文件包含漏洞）&quot; class=&quot;headerlink&quot; title=&quot;File Inclusion（文件包含漏洞）&quot;&gt;&lt;/a&gt;File
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="File vulnerability" scheme="zwdtk.github.io/tags/File-vulnerability/"/>
+    
+  </entry>
+  
+  <entry>
     <title>pikachu漏洞练习平台实验--CSRF</title>
     <link href="zwdtk.github.io/2020/05/13/note-3/"/>
     <id>zwdtk.github.io/2020/05/13/note-3/</id>
     <published>2020-05-13T07:34:10.000Z</published>
-    <updated>2020-05-13T04:09:57.648Z</updated>
+    <updated>2020-05-13T15:46:07.254Z</updated>
     
     <summary type="html">
     
@@ -37,7 +62,7 @@
     
     
     
-      <category term="XSS" scheme="zwdtk.github.io/tags/XSS/"/>
+      <category term="CSRF" scheme="zwdtk.github.io/tags/CSRF/"/>
     
   </entry>
   

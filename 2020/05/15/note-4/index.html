@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="_data, Curious">
+    <meta name="keywords" content="pikachu漏洞练习平台实验--文件漏洞, Curious">
     <meta name="description" content="用于学习操作">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>_data | Curious</title>
+    <title>pikachu漏洞练习平台实验--文件漏洞 | Curious</title>
     <link rel="icon" type="image/png" href="/faviconn.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -309,12 +309,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">_data</h1>
+                    <h1 class="description center-align post-title">pikachu漏洞练习平台实验--文件漏洞</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/File-vulnerability/">
+                                <span class="chip bg-color">File vulnerability</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-04-15
+                    2020-05-15
                 </div>
                 
 
@@ -452,7 +456,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    52
+                    371
                 </div>
                 
 
@@ -475,7 +479,14 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <script>
+                <h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
+<li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
+<li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
+<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码</li>
+</ul>
+</li>
+</ul>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -518,7 +529,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io/data/index.html">zwdtk.github.io/data/index.html</a>
+                    <a href="zwdtk.github.io/2020/05/15/note-4/">zwdtk.github.io/2020/05/15/note-4/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -555,7 +566,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/File-vulnerability/">
+                                    <span class="chip bg-color">File vulnerability</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -726,27 +741,25 @@
                 <i class="far fa-dot-circle"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/data/index.html">
+                <a href="/2020/05/15/note-4/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="_data">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--文件漏洞">
                         
-                        <span class="card-title">_data</span>
+                        <span class="card-title">pikachu漏洞练习平台实验--文件漏洞</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return
+                            File Inclusion（文件包含漏洞）简介ღゝ◡╹)ノ♡
+在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进function.php中，之后当某个文件需要调用
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-15
                             </span>
                         <span class="publish-author">
                             
@@ -758,46 +771,59 @@
                 </div>
 
                 
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/File-vulnerability/">
+                        <span class="chip bg-color">File vulnerability</span>
+                    </a>
+                    
+                </div>
+                
             </div>
         </div>
         
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/data/index.html">
+                <a href="/2020/05/13/note-3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="_data">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--CSRF">
                         
-                        <span class="card-title">_data</span>
+                        <span class="card-title">pikachu漏洞练习平台实验--CSRF</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return
+                            概述简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）
+CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会伪造一个请求（一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也称为o
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-13
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            zwdtk
+                            LMX
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CSRF/">
+                        <span class="chip bg-color">CSRF</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
