@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="friends.json, Curious">
+    <meta name="keywords" content="pikachu漏洞练习平台实验--CSRF, Curious">
     <meta name="description" content="用于学习操作">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>friends.json | Curious</title>
+    <title>pikachu漏洞练习平台实验--CSRF | Curious</title>
     <link rel="icon" type="image/png" href="/faviconn.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -309,12 +309,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">friends.json</h1>
+                    <h1 class="description center-align post-title">pikachu漏洞练习平台实验--CSRF</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/XSS/">
+                                <span class="chip bg-color">XSS</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-04-15
+                    2020-05-13
                 </div>
                 
 
@@ -452,7 +456,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    52
+                    401
                 </div>
                 
 
@@ -475,7 +479,13 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <script>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡）"><a href="#简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡）" class="headerlink" title="简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）"></a>简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）</h4><ul>
+<li>CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会<strong>伪造一个请求（一般是一个链接）</strong>，然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也称为<strong>one click攻击</strong></li>
+<li>CSRF攻击需要条件<br>  1）目标网站没有对修改个人信息修改的请求进行防CSRF处理，导致该请求容易被伪造。因此，判断一个网站有没有CSRF漏洞，其实就是判断对关键信息（密码等）的操作（增删改）是否容易被伪造<br>  2）受击者点击伪造的请求链接时有登录状态（已经登陆了目标网站），如果受击者没有登录，那么即便lucy点击了链接也没有作用</li>
+<li>CSRF与XSS的区别<br>  1）CSRF是<strong>借助用户的权限</strong>完成攻击，攻击者并没有拿到用户的权限。目标构造修改个人信息的链接，利用受击者在登录状态下点击此链接达到修改信息的目的<br>  2）XSS直接<strong>盗取了用户的权限</strong>，然后实施攻击。攻击者利用XSS盗取了目标的Cookie，登录受击者的后台，再修改相关信息</li>
+</ul>
+<hr>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h4 id="CSRF-get"><a href="#CSRF-get" class="headerlink" title="CSRF(get)"></a>CSRF(get)</h4><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -508,7 +518,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">zwdtk</a>
+                    <a href="zwdtk.github.io" rel="external nofollow noreferrer">LMX</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -518,7 +528,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io/friends-json/index.html">zwdtk.github.io/friends-json/index.html</a>
+                    <a href="zwdtk.github.io/2020/05/13/note-3/">zwdtk.github.io/2020/05/13/note-3/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -531,7 +541,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint polocy. If reproduced, please indicate source
-                    <a href="zwdtk.github.io" target="_blank">zwdtk</a>
+                    <a href="zwdtk.github.io" target="_blank">LMX</a>
                     !
                 </span>
             </div>
@@ -555,7 +565,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/XSS/">
+                                    <span class="chip bg-color">XSS</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -726,37 +740,43 @@
                 <i class="far fa-dot-circle"></i>&nbsp;Current
             </div>
             <div class="card">
-                <a href="/friends-json/index.html">
+                <a href="/2020/05/13/note-3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="friends.json">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--CSRF">
                         
-                        <span class="card-title">friends.json</span>
+                        <span class="card-title">pikachu漏洞练习平台实验--CSRF</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return
+                            概述简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）
+CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会伪造一个请求（一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也称为o
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-13
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            zwdtk
+                            LMX
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -764,40 +784,45 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/friends-json/index.html">
+                <a href="/2020/05/11/note-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="friends.json">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--XSS">
                         
-                        <span class="card-title">friends.json</span>
+                        <span class="card-title">pikachu漏洞练习平台实验--XSS</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return
+                            概述简介
+XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-11
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            zwdtk
+                            LMX
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
