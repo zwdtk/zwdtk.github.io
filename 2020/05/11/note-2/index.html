@@ -456,14 +456,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    2.4k
+                    2.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    8 Min
+                    10 Min
                 </div>
                 
 
@@ -510,8 +510,13 @@
 <pre><code>&lt;SCRIPT&gt;alert(1)&lt;/sCRIpt&gt;</code></pre><p>这时成功弹窗了，也说明后端只对小写的<strong>script</strong>进行过滤<br><img src="https://s1.ax1x.com/2020/05/12/YtiO2Q.png" alt=""></p>
 <h4 id="XSS之htmlspecialchars"><a href="#XSS之htmlspecialchars" class="headerlink" title="XSS之htmlspecialchars"></a>XSS之htmlspecialchars</h4><p>1）就是这，开始没注意到<code>htmlspecialchars()</code>这个函数，查查 -&gt; <strong>htmlspecialchars()是PHP里面把预定义的字符转换为HTML实体的函数</strong>，部分如下<br>| 预定义字符转换 | &amp; 转 &amp;amp | “ 转 &amp;quot | ‘ 转 &amp;#039 | &lt; 转 &amp;lt | &gt; 转 &amp;gt |<br>可用引号类型: <code>ENT_COMPAT默认，仅编码双引号</code>，<code>ENT_QUOTES，编码双引号和单引号</code>，<code>ENT_NOQUOTES，不编码任何引号</code><br>2）所以接下来进行猜测，如果输入<code>&lt;&gt;?&amp;"666</code>这些啥的可能会经过HTML编码，然后结合观察xssr_main部分的源码可发现单引号仍可用，所以选择<strong>单引号闭合方式</strong>构造payload</p>
 <pre><code>' onclick=alert(123456) '</code></pre><p>3）提交后点击跳转，看见弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YapPUK.png" alt=""></p>
-<h4 id="XSS之href输出"><a href="#XSS之href输出" class="headerlink" title="XSS之href输出"></a>XSS之href输出</h4><p>1）开始需要我们输入一个常用网站，那就试试<code>www.baidu.com</code><br><img src="https://s1.ax1x.com/2020/05/13/Ya9hmn.png" alt=""> <img src="https://s1.ax1x.com/2020/05/13/YaPLZR.jpg" alt=""></p>
-<h4 id="剩个反射型post，下次一定（以后补充）"><a href="#剩个反射型post，下次一定（以后补充）" class="headerlink" title="剩个反射型post，下次一定（以后补充）"></a>剩个反射型post，下次一定（以后补充）</h4><p><img src="https://s1.ax1x.com/2020/05/12/YNViVA.jpg" alt=""></p>
+<h4 id="XSS之href输出"><a href="#XSS之href输出" class="headerlink" title="XSS之href输出"></a>XSS之href输出</h4><p>1）开始需要我们输入一个常用网站，那就试试<code>www.baidu.com</code><br><img src="https://s1.ax1x.com/2020/05/13/Ya9hmn.png" alt=""> <img src="https://s1.ax1x.com/2020/05/13/YaPLZR.jpg" alt=""><br>2）（我不是，我没有，别瞎说啊）好的，下一步看看源码，发现似乎没啥特别，咱换种输入，比如输入<code>123456</code>，查看源码<br><img src="https://s1.ax1x.com/2020/05/13/YaFX8K.png" alt=""><br>3）输出出现在<strong>a标签的href属性</strong>里面，首先找到pikachu的XSS文件中这个实验文件<strong>xss_03.php</strong>，看看里面都有啥<br><img src="https://s1.ax1x.com/2020/05/13/YaAMOe.png" alt=""><br>4）<strong>分析</strong>，我们输入参数，会先经过判断，如果不是<code>www.baidu.com</code>，就会进行htmlspecialchars转义（ENT_QUOTES则是对单双引号都进行转义了），然后将我们的参数输出到<strong>a标签的href属性</strong>里面<br>5）输出出现在<strong>a标签的href属性</strong>里面，可使用javascript协议来执行js，可构造payload</p>
+<pre><code>javascript:alert(123456)</code></pre><p>提交点击url，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YaVBin.png" alt=""></p>
+<h4 id="XSS之js输出"><a href="#XSS之js输出" class="headerlink" title="XSS之js输出"></a>XSS之js输出</h4><p>1）尝试除了<strong>tmac</strong>，输入其他的基本都显示同一句话，查看页面源码看到p标签好像有个小提示-&gt;<strong>id=”fromjs”</strong>，尝试打开原题文件<strong>xss_04.php</strong>查看<br><img src="https://s1.ax1x.com/2020/05/13/YaeoDO.png" alt=""><br>2）<strong>分析</strong>，我们输入的会被放到JS中，然后经过判断，输出<br>3）<strong>通过闭合方式</strong>构造payload，先用<code>一个单引号和&lt;/script&gt;</code>闭合掉页面开头的<code>&lt;script&gt;</code>，然后插入一段要注入的JS代码，如下</p>
+<pre><code>'&lt;/script&gt;&lt;script&gt;alert("执行一下就弹窗")&lt;/script&gt;</code></pre><p>提交后我们的JS也被执行了，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YautED.png" alt=""></p>
+<ul>
+<li>（总结）<strong>漏洞的输出点是在JS中</strong>，通过用户的输入动态生成了JS代码；而<strong>JS有个特点，它不会对实体编码进行解释</strong>，所以这里如果进行html的实体编码,虽然可以解决XSS的问题,但是<strong>实体编码后的内容,在JS里面不会进行翻译</strong>,这样会导致前端的功能无法使用，所以应在JS的输出点使用<code>\</code>对特殊字符进行转义<h4 id="剩个反射型post，下次一定（以后补充）"><a href="#剩个反射型post，下次一定（以后补充）" class="headerlink" title="剩个反射型post，下次一定（以后补充）"></a>剩个反射型post，下次一定（以后补充）</h4><img src="https://s1.ax1x.com/2020/05/12/YNViVA.jpg" alt=""></li>
+</ul>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -1085,7 +1090,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">3.2k</span>&nbsp;字
+                class="white-color">3.7k</span>&nbsp;字
             
             
             
