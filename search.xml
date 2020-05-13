@@ -101,6 +101,94 @@
       </tags>
   </entry>
   <entry>
+    <title>pikachu漏洞练习平台实验--CSRF</title>
+    <url>/2020/05/13/note-3/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介-当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡"><a href="#简介-当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡" class="headerlink" title="简介|当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡"></a>简介|当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡</h4><ul>
+<li>CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会<strong>伪造一个请求（一般是一个链接）</strong>，然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也称为<strong>one click攻击</strong></li>
+<li>CSRF攻击需要条件<br>  1）目标网站没有对修改个人信息修改的请求进行防CSRF处理，导致该请求容易被伪造。因此，判断一个网站有没有CSRF漏洞，其实就是判断对关键信息（密码等）的操作（增删改）是否容易被伪造<br>  2）受击者点击伪造的请求链接时有登录状态（已经登陆了目标网站），如果受击者没有登录，那么即便lucy点击了链接也没有作用</li>
+<li>CSRF与XSS的区别<br>  1）CSRF是<strong>借助用户的权限</strong>完成攻击，攻击者并没有拿到用户的权限。目标构造修改个人信息的链接，利用受击者在登录状态下点击此链接达到修改信息的目的<br>  2）XSS直接<strong>盗取了用户的权限</strong>，然后实施攻击。攻击者利用XSS盗取了目标的Cookie，登录受击者的后台，再修改相关信息</li>
+</ul>
+<hr>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h4 id="CSRF-get"><a href="#CSRF-get" class="headerlink" title="CSRF(get)"></a>CSRF(get)</h4><p>1）首先在皮卡丘平台登录一个账号，比如lucy，然后点击修改个人信息（比如我们不改地址add）<br><img src="https://s1.ax1x.com/2020/05/13/YwaiBF.png" alt=""><br>2）骚年等等！莫着急提交，咱先把抓包的<code>Burpsuite</code>打开，然后在实验平台那边submit一下，是不是发现卡住了，快去bp那看看<br><img src="https://s1.ax1x.com/2020/05/13/YwarNj.png" alt=""><br>3）又到了咱们最爱的分析环节（如果爱<del>请深爱</del>），从提交的请求来看，后台没做CSRF token，同时也是通过GET请求来提交修改信息，所以可以直接在bp那修改一下url的内容，<strong>比如把人家地址改成在你心里</strong>（ok又扯远了，改成999999…吧），<strong>然后放过那个包(;′⌒`)吧</strong>，然后lucy就会发现自己的住址…emmm<br><img src="https://s1.ax1x.com/2020/05/13/Ywd3rT.png" alt=""></p>
+<ul>
+<li>其实这个方式满足条件比较严苛，比如用户必须登录状态，而且会去点这个xx链接。（拓）该方式与反射型XSS是不一样的，<strong>反射型XSS可以获取用户cookie得到了shell，而get型CSRF并没有得到用户的shell</strong></li>
+<li>这里补充一个内容，<strong>大佬可以忽略了</strong>，基于自己开始用bp抓不到包的情况，小咸鱼问了下大神，要到了相关解决方法: <a href="https://blog.csdn.net/weixin_45396639/article/details/104379312" target="_blank" rel="noopener">为啥开了bp不抓包</a><h4 id="CSRF-post"><a href="#CSRF-post" class="headerlink" title="CSRF(post)"></a>CSRF(post)</h4>1）ok这次咱们登录lili小姐的账号<br><img src="https://s1.ax1x.com/2020/05/14/Yws8qx.png" alt=""><br>2）走下流程吧，修改信息 -&gt; 开bp准备抓包 -&gt; 用户提交请求，bp抓包<br><img src="https://s1.ax1x.com/2020/05/14/YwsxyR.png" alt=""><br>3）好的，下面看不懂了，over（看到最后一行，分析是以form表单的请求体提交）</li>
+<li>这里的攻击方式跟XSS中POST类型是类似的，攻击者可以搭建一个站点，在站点上做一个表单，诱导受击者点击这个链接，当受击者点击时，就会自动向存在CSRF的服务器提交POST请求修改个人信息<br>4）下面就是制作攻击网页放在服务器上，诱导受击者点击（编写一个<strong>post.html页面</strong>）比如网上找一段<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;script&gt;
+window.onload = function() {
+document.getElementById("postsubmit").click();
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method="post" action="http://127.0.0.1/pikachu-master/vul/csrf/csrfpost/csrf_post_edit.php"&gt;
+  &lt;input id="sex" type="text" name="sex" value="abcdefg" /&gt;
+  &lt;input id="phonenum" type="text" name="phonenum" value="abcdefg" /&gt;
+  &lt;input id="add" type="text" name="add" value="abcdefg" /&gt;
+  &lt;input id="email" type="text" name="email" value="abcdefg@pikachu.com" /&gt;
+  &lt;input id="postsubmit" type="submit" name="submit" value="submit" /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>5）然后</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>CSRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pikachu漏洞练习平台实验--文件漏洞</title>
+    <url>/2020/05/13/note-4/</url>
+    <content><![CDATA[<h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
+<li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
+<li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
+<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码</li>
+</ul>
+</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>File vulnerability</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pikachu漏洞练习平台实验--XSS</title>
     <url>/2020/05/11/note-2/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
@@ -162,75 +250,6 @@
       </script>]]></content>
       <tags>
         <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pikachu漏洞练习平台实验--CSRF</title>
-    <url>/2020/05/13/note-3/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡）"><a href="#简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡）" class="headerlink" title="简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）"></a>简介（当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡）</h4><ul>
-<li>CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会<strong>伪造一个请求（一般是一个链接）</strong>，然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也称为<strong>one click攻击</strong></li>
-<li>CSRF攻击需要条件<br>  1）目标网站没有对修改个人信息修改的请求进行防CSRF处理，导致该请求容易被伪造。因此，判断一个网站有没有CSRF漏洞，其实就是判断对关键信息（密码等）的操作（增删改）是否容易被伪造<br>  2）受击者点击伪造的请求链接时有登录状态（已经登陆了目标网站），如果受击者没有登录，那么即便lucy点击了链接也没有作用</li>
-<li>CSRF与XSS的区别<br>  1）CSRF是<strong>借助用户的权限</strong>完成攻击，攻击者并没有拿到用户的权限。目标构造修改个人信息的链接，利用受击者在登录状态下点击此链接达到修改信息的目的<br>  2）XSS直接<strong>盗取了用户的权限</strong>，然后实施攻击。攻击者利用XSS盗取了目标的Cookie，登录受击者的后台，再修改相关信息</li>
-</ul>
-<hr>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h4 id="CSRF-get"><a href="#CSRF-get" class="headerlink" title="CSRF(get)"></a>CSRF(get)</h4><p>1）首先在皮卡丘平台登录一个账号，比如lucy，然后点击修改个人信息（比如我们不改地址add）<br><img src="https://s1.ax1x.com/2020/05/13/YwaiBF.png" alt=""><br>2）骚年等等！莫着急提交，咱先把抓包的<code>Burpsuite</code>打开，然后在实验平台那边submit一下，是不是发现卡住了，快去bp那看看<br><img src="https://s1.ax1x.com/2020/05/13/YwarNj.png" alt=""><br>3）又到了咱们最爱的分析环节（如果爱<del>请深爱</del>），从提交的请求来看，后台没做CSRF token，同时也是通过GET请求来提交修改信息，所以可以直接在bp那修改一下url的内容，<strong>比如把人家地址改成在你心里</strong>（ok又扯远了，改成999999…吧），<strong>然后放过那个包(;′⌒`)吧</strong>，然后lucy就会发现自己的住址…emmm<br><img src="https://s1.ax1x.com/2020/05/13/Ywd3rT.png" alt=""></p>
-<ul>
-<li>其实这个方式满足条件比较严苛，比如用户必须登录状态，而且会去点这个xx链接。（拓）该方式与反射型XSS是不一样的，<strong>反射型XSS可以获取用户cookie得到了shell，而get型CSRF并没有得到用户的shell</strong><h4 id="CSRF-post"><a href="#CSRF-post" class="headerlink" title="CSRF(post)"></a>CSRF(post)</h4></li>
-</ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>CSRF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pikachu漏洞练习平台实验--文件漏洞</title>
-    <url>/2020/05/13/note-4/</url>
-    <content><![CDATA[<h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
-<li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
-<li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
-<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码</li>
-</ul>
-</li>
-</ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>File vulnerability</tag>
       </tags>
   </entry>
   <entry>
