@@ -456,14 +456,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    5 Min
                 </div>
                 
 
@@ -506,7 +506,20 @@ document.getElementById("postsubmit").click();
   &lt;input id="postsubmit" type="submit" name="submit" value="submit" /&gt;
 &lt;/form&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre>5）然后将请求返回给lili，她sumbit后就会发现<br><img src="https://s1.ax1x.com/2020/05/14/YDGaee.png" alt=""><h4 id="CSRF-Token"><a href="#CSRF-Token" class="headerlink" title="CSRF Token"></a>CSRF Token</h4></li>
+&lt;/html&gt;</code></pre>5）然后将请求返回给lili，她<strong>sumbit</strong>后就会发现<br><img src="https://s1.ax1x.com/2020/05/14/YDGaee.png" alt=""><h4 id="CSRF-Token"><a href="#CSRF-Token" class="headerlink" title="CSRF Token"></a>CSRF Token</h4>1）先登录，然后修改，<strong>sumbit</strong>前抓下包<br><img src="https://s1.ax1x.com/2020/05/14/YDt8Wn.png" alt=""><br>2）这里多了个<strong>Token</strong>，即在用户提供请求时，增加了一个随机码（有一说一，太随机了趴），而且每次后台要先对随机码验证，所以<strong>随机的Token，我们就很难伪造URL了</strong><br><img src="https://s1.ax1x.com/2020/05/14/YDUXGj.jpg" alt=""><br>3）或者想看看<strong>Token</strong>出现的原因，可以进入该实验的<code>token_get_edit_.php文件</code>查看<br>4）所以就攻击不成了，搜索引擎查了下相关知识，作为一点点补充吧（不是因为怕结尾结的草率哦，嘿嘿）<br>CSRF的主要问题是敏感操作容易被伪造，加入<strong>Token</strong>可让请求不容易被伪造。但防护措施除了增加<strong>Token验证</strong>，还有其他方式<h5 id="其他防护措施"><a href="#其他防护措施" class="headerlink" title="其他防护措施"></a>其他防护措施</h5></li>
+<li>会话安全管理（避免会话被利用）<ul>
+<li>不在客户端保存敏感信息（比如身份验证信息）</li>
+<li>退出、关闭浏览器时的会话过期机制</li>
+<li>会话过期机制，比如15分钟无操作，则自动登录超时</li>
+</ul>
+</li>
+<li>访问控制安全管理<ul>
+<li>敏感信息的修改时需要身份进行二次认证，比如修改密码，也需要旧密码判断</li>
+<li>敏感信息的修改使用POST，而不是GET</li>
+<li>通过HTTP头部中的REFERER来限制原页面</li>
+</ul>
+</li>
+<li>增加登录验证码等等</li>
 </ul>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -1078,7 +1091,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">5.1k</span>&nbsp;字
+                class="white-color">5.4k</span>&nbsp;字
             
             
             
