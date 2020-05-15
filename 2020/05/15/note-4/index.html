@@ -309,7 +309,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/25.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -447,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-05-13
+                    2020-05-15
                 </div>
                 
 
@@ -456,14 +456,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    371
+                    2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    7 Min
                 </div>
                 
 
@@ -482,8 +482,31 @@
                 <h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
 <li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
 <li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
-<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码</li>
+<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码<h4 id="File-Inclusion-local"><a href="#File-Inclusion-local" class="headerlink" title="File Inclusion(local)"></a>File Inclusion(local)</h4>1）开始是提问，咱们先随便选一个提交，同时查看页面源码，wait<del>wait</del>，直接看到URL，发现有处很特别（url里面有文件名），为了验证，同时查看源码<br><img src="https://s1.ax1x.com/2020/05/14/YD4UoQ.png" alt=""><br><img src="https://s1.ax1x.com/2020/05/14/YD4rQ0.png" alt=""><br>2）撇开这是一个已知目的的实验（俺好像做不到呀），<strong>猜想存在文件包含漏洞</strong>，下一步则是在文件包含的根目录下创建个比如叫<code>test.php</code>文件，写入个<code>phpinfo函数</code>测试就行，如下<pre><code>&lt;?php
+phpinfo();
+?&gt;</code></pre>3）接下来将URL里面的文件名改成要包含的文件名（<strong>即把前面红线划的部分改成test.php</strong>），刷新，成功进入后台<br><img src="https://s1.ax1x.com/2020/05/14/YD7ZUU.png" alt=""><h4 id="File-Inclusion-remote"><a href="#File-Inclusion-remote" class="headerlink" title="File Inclusion(remote)"></a>File Inclusion(remote)</h4>1）开始实验前呢，遇到点小插曲，显示<strong>warning:你的allow_url_include没有打开</strong>，这种情况的话，可以找到<code>php.ini文件</code>（文件位置可以看前面local实验进入后台的php相关信息），然后把找到<code>allow_url_include</code>把Off改成On即可<br>2）ok回到正题，先选然后提交，看看URL有木有什么特别，发现其<strong>对filename传参有了include过滤</strong><br>3）先试试利用php://input协议直接执行php命令，即<code>?filename=php://input</code>，发现跳转回原始界面<br>4）判断<strong>包含远程服务器上的文件，这里直接使用本地服务器模拟</strong>，即直接用上一个实验的<code>test.php</code>文件，把路径写对后传参给filename即可。刷新，成功跳转<br><img src="https://s1.ax1x.com/2020/05/15/YDbXHx.png" alt=""></li>
 </ul>
+</li>
+</ul>
+<hr>
+<h3 id="Unsafe-Filedownload（文件下载漏洞）"><a href="#Unsafe-Filedownload（文件下载漏洞）" class="headerlink" title="Unsafe Filedownload（文件下载漏洞）"></a>Unsafe Filedownload（文件下载漏洞）</h3><h4 id="一丢丢介绍ღゝ◡╹-ノ♡"><a href="#一丢丢介绍ღゝ◡╹-ノ♡" class="headerlink" title="一丢丢介绍ღゝ◡╹)ノ♡"></a>一丢丢介绍ღゝ◡╹)ノ♡</h4><ul>
+<li>平时当我们当点击下载链接，便会向后台发送一个下载请求，一般这个请求会包含一个需要下载的文件名称，后台在收到请求后 会开始执行下载代码，将该文件名对应的文件response给浏览器，从而完成下载</li>
+<li>但如果后台在收到请求的文件名后,不对其进行安全判断就直接进行下载，而此时攻击者提交的不是一个程序预期的的文件名，而是一个精心构造的路径(比如../../../etc/passwd),很有可能后台的敏感信息会被下载，引发信息泄露<h4 id="Unsafe-Filedownload"><a href="#Unsafe-Filedownload" class="headerlink" title="Unsafe Filedownload"></a>Unsafe Filedownload</h4>1）先来点个下载试试（实验才这样搞哈，平时注意安全哈哈），诶嘿发现(☆_☆)下载这些图是<strong>filename直接跳转</strong><br>2）分析出既然可以直接通过filename读取文件，那就可伪造下载链接，在页面源码找到<code>execdownload.php</code>的位置<br>3）下一步则可以构造payload，这里实验为了方便（不是为了图快哦），我直接选择更改图片了（kb.png换成lmx.png的下载路径），成功跳转下载<br><img src="https://s1.ax1x.com/2020/05/15/Ys4izn.png" alt=""><br>4）有时伪造模糊路径的时候，路径没问题了，就可能点击下载的时候会跳转显示文件不存在（其实我也想知道为啥哈哈），不过可以说明的是里面有下载漏洞（即下载的文件路径可伪造）</li>
+</ul>
+<hr>
+<h3 id="Unsafe-Fileupload（文件上传漏洞）"><a href="#Unsafe-Fileupload（文件上传漏洞）" class="headerlink" title="Unsafe Fileupload（文件上传漏洞）"></a>Unsafe Fileupload（文件上传漏洞）</h3><h4 id="一点点介绍ღゝ◡╹-ノ♡"><a href="#一点点介绍ღゝ◡╹-ノ♡" class="headerlink" title="一点点介绍ღゝ◡╹)ノ♡"></a>一点点介绍ღゝ◡╹)ノ♡</h4><ul>
+<li><p>因为业务功能需要，很多 Web 站点都有文件上传的接口，比如网站注册的时候需要上传头像、附件啥的。当用户点击上传按钮后，后台会对上传的文件进行判断 比如是否是指定的类型、后缀名、大小等等，然后将其按照设计的格式进行重命名后存储在指定的目录</p>
+</li>
+<li><p>但如果说后台对上传的文件<strong>没有进行任何的安全判断或者判断条件不够严谨</strong>，则攻击者可能会<strong>上传一些恶意的文件，比如一句木马</strong>，从而导致后台服务器被webshell。所以<strong>对文件的类型、后缀名、大小、上传方式等等的验证</strong>还有<strong>路径的保护</strong>就格外重要了</p>
+<h4 id="client-check（客户端-check）"><a href="#client-check（客户端-check）" class="headerlink" title="client check（客户端 check）"></a>client check（客户端 check）</h4><p>1）开始看到只允许咱们上传图片，试试上传上次写的<code>test.php</code>文件<br><img src="https://s1.ax1x.com/2020/05/15/Ys7dM9.png" alt=""><br>2）打开控制台查看源码，看一下这个限制是不是通过前端完成的<br><img src="https://s1.ax1x.com/2020/05/15/Ys7qzQ.png" alt=""><br>3）分析当<strong>input标签</strong>的状态发生改变时，就会调用<strong>checkFileExt()函数</strong>，以下是该函数执行程序<br><img src="https://s1.ax1x.com/2020/05/15/YsHuFK.png" alt=""><br>4）可以看到<strong>这个函数会判断文件的后缀</strong>是否在<code>jpg、png或gif</code>中，是这些后缀才运行上传<br>5）但是<strong>前端做的限制只是辅助作用</strong>，是可以绕过的，比如<strong>在页面源码找到onchange直接删掉其中的内容</strong>（即直接把那个函数删了），然后继续尝试上传<code>test.php</code>文件，接着可看到<br><img src="https://s1.ax1x.com/2020/05/15/YsbiAP.png" alt=""></p>
+<h4 id="MIME-type（服务端-check）"><a href="#MIME-type（服务端-check）" class="headerlink" title="MIME type（服务端 check）"></a>MIME type（服务端 check）</h4><h5 id="MIME"><a href="#MIME" class="headerlink" title="MIME"></a>MIME</h5></li>
+<li><p>好的，开始前先讲讲什么是MIMI，噢不对，是MIME，不好意思哈哈。MIME是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问时，浏览器会自动使用指定应用程序来打开</p>
+</li>
+<li><p>主要由两部分组成，<strong>前面是数据的大类别</strong>，例如声音audio、图象image等，<strong>后面定义具体的种类</strong>。常见类型有<strong>超文本标记语言、普通文件、RTF文件、GIF图形、JPEG图形等等</strong><br>（还是实验要紧，来）<br>1）开始尝试上传<code>test.php</code>文件，不过可以猜到结果<br><img src="https://s1.ax1x.com/2020/05/15/YsLtT1.png" alt=""><br>2）想一想，是服务器端的处理，尝试开bp抓包，然后修改请求头（就是修改一下<code>Content-Type</code>），比改成<br><img src="https://s1.ax1x.com/2020/05/15/Yy9ukQ.png" alt=""><br>3）然后提交，看到成功上传其他类型的文件<br><img src="https://s1.ax1x.com/2020/05/15/Yy98XV.png" alt=""></p>
+<h4 id="getimagesize"><a href="#getimagesize" class="headerlink" title="getimagesize"></a>getimagesize</h4></li>
+<li><p>（小知识）<strong>getimagesize()函数</strong>将测定任何 GIF，JPG，PNG，SWF，SWC，PSD，TIFF，BMP，IFF，JP2，JPX，JB2，JPC，XBM 或 WBMP 图像文件的大小并返回图像的尺寸以及文件类型及图片高度与宽度，所以绕过此函数需要制作图片马<br>1）开始制作图片马，可用Copy命令制作<code>copy 1.jpg/b + test.php/a 2.jpg</code>（b表示是二进制文件，a表示ASCII码文件），这样制作的图片即内涵木马，又没有损坏<br><img src="https://s1.ax1x.com/2020/05/15/YyZ09U.png" alt=""><br><img src="https://s1.ax1x.com/2020/05/15/YyZDc4.png" alt=""><br>2）接着上传图片，记录显示的文件保存路径，然后利用前面实验的文件包含的漏洞，提交<br><img src="https://s1.ax1x.com/2020/05/15/YymrwR.png" alt=""></p>
+</li>
+<li><p>然后实验到这差不多就结束啦，总而言之，还有很长很长的路要走呢ღゝ◡╹)ノ♡</p>
 </li>
 </ul>
 <script>
@@ -529,7 +552,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="zwdtk.github.io/2020/05/13/note-4/">zwdtk.github.io/2020/05/13/note-4/</a>
+                    <a href="zwdtk.github.io/2020/05/15/note-4/">zwdtk.github.io/2020/05/15/note-4/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -736,9 +759,56 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/2020/05/15/note-4/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--文件漏洞">
+                        
+                        <span class="card-title">pikachu漏洞练习平台实验--文件漏洞</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            File Inclusion（文件包含漏洞）简介ღゝ◡╹)ノ♡
+在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进function.php中，之后当某个文件需要调用
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            zwdtk
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/File-vulnerability/">
+                        <span class="chip bg-color">File vulnerability</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2020/05/14/note-3/">
                     <div class="card-image">
@@ -757,9 +827,9 @@ CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会伪造一个
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-14
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-14
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -773,52 +843,6 @@ CSRF（跨站请求伪造），在CSRF的攻击场景中攻击者会伪造一个
                     
                     <a href="/tags/CSRF/">
                         <span class="chip bg-color">CSRF</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/05/11/note-2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="pikachu漏洞练习平台实验--XSS">
-                        
-                        <span class="card-title">pikachu漏洞练习平台实验--XSS</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            概述简介
-XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-11
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            LMX
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/XSS/">
-                        <span class="chip bg-color">XSS</span>
                     </a>
                     
                 </div>
@@ -1056,7 +1080,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">5.4k</span>&nbsp;字
+                class="white-color">7k</span>&nbsp;字
             
             
             

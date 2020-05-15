@@ -1,102 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>pikachu漏洞练习平台实验--XSS</title>
-    <url>/2020/05/11/note-2/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li>XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户访问这个页面时，这个恶意的JS代码就会在用户的浏览器端执行。</li>
-<li>主要原因: 程序中输入和输出的控制不够严格<h4 id="XSS攻击类型"><a href="#XSS攻击类型" class="headerlink" title="XSS攻击类型"></a>XSS攻击类型</h4></li>
-<li>反射型: 又被称为非持久性、参数型XSS。常见的XSS攻击，恶意代码通常在URL地址的请求参数中，且交互的数据一般不会被存在数据库里面，一次性。</li>
-<li>存储型: 又被称为持久型XSS，相比于反射型XSS，其危害性更大大大大大大，甚至可能危害Web服务器本身的安全。常见于评论区、留言，即交互的数据会被存在数据库里面，永久性存储（我慌了，你呢？）</li>
-<li>DOM型: 基于文档对象模型的一种漏洞，是一种通过DOM操作前端代码输出的时候产生的问题，不与后台服务器产生数据交互，一次性，也属于反射型</li>
-<li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，为啥有个远大于号？）<h4 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h4>（1）目标上找输入点，“见框就插”，比如查询接口、留言板啥的<br>（2）输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理<br>（3）构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件<br>（4）提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞<br>以下是在pikachu（皮卡丘）漏洞平台瞎捣鼓的小实验，一起来搞啊</li>
-</ul>
-<hr>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>皮卡丘平台有很多（烤！面筋~）瞎说，有很多漏洞类型的实验，这次咱选<code>Cross-Site Scripting</code>进行<br>平台环境搭建可参考: <a href="https://cloud.tencent.com/developer/article/1590950" target="_blank" rel="noopener">pikachu</a> </p>
-<h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><p>1）“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>2）看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下</p>
-<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><p>3）但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行<br><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong></p>
-<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4><ul>
-<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>1）我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>2）只能查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4>1）可以将DOM理解为访问HTML的标准接口，而DOM里面会把我们的HTML分成一个DOM树，以这棵树为入口，通过DOM的某些方法对树进行操作（增删改标签啥的），所以DOM也相当于在前端提供了一个<strong>通过JS去对HTML进行操作的接口</strong><br>2）而造成DOM型XSS的原因则是前端的输入被DOM给获取到了，通过DOM又在前端输出，跟反射型和存储型比起来，它是不经过后台交互的<br>3）等等？快进入正题，不能瞎扯<br>依然是老套路，上去先插一小段特殊字符提交一下，what do you see?又是跳转403，又是没反应的，决定观察页面源码，找到<strong>xssd_main</strong>部分<br><img src="https://s1.ax1x.com/2020/05/11/YYE39S.png" alt=""></li>
-<li>这里有段JS代码，它通过 getElementById 获取标签 Id 为 text 的内容赋值给 str ，然后把 str 的内容通过字符串拼接的方式写到了 a 标签的 href 属性中，a 标签会写到 Id 为 dom 的 div 标签中（呼~~真是让人难顶的代码分析）<strong>通过闭合方式</strong>构造个payload试试吧，如下<pre><code>#' onclick=alert("看不见我看不见我")&gt;</code></pre>点击一下，我看见你啦φ(≧ω≦*)♪，成功弹窗<br><img src="https://s1.ax1x.com/2020/05/11/YYeogU.png" alt=""><h4 id="DOM型XSS-X"><a href="#DOM型XSS-X" class="headerlink" title="DOM型XSS-X"></a>DOM型XSS-X</h4>1）<strong>请说出宁的伤心往事？</strong>随缘输入一段内容，出现一可选项，click一下，又来一个，click第两下，啥？404了，莫得想法了，查看源码<br><img src="https://s1.ax1x.com/2020/05/11/YYuA9P.png" alt=""><br>2）又来到了分析时间（我拒绝，不是），看到<strong>xssd_main</strong>里面那段JS代码，一个domxss函数，利用<strong>window.location.search</strong>获取浏览器URL内容， 赋值到str，ok下面不会了，游戏结束<br>3）（港咩啊，查查呗）然后是经过URL解码和字符串分隔，取出URL中的参数内容，再把 “+” 替换为 “ ”（空格），赋值给 xss，最后把 xss 拼接到 a 标签中，然后写到 Id 为 dom 的 div 标签中，<strong>来了划重点</strong>: 跟前面的DOM不同，它的输入是从浏览器的URL中获取的，就像反射型XSS(get)<br>4）<strong>通过闭合方式</strong>构造payload，比如<pre><code>#' onclick=alert("求求宁给俺弹个窗吧")&gt;</code></pre>口中默念，3、2、1、点火起飞（瞎说啥），成功弹窗了<br><img src="https://s1.ax1x.com/2020/05/11/YYM9JI.png" alt=""><h4 id="XSS之盲打"><a href="#XSS之盲打" class="headerlink" title="XSS之盲打"></a>XSS之盲打</h4>1）好的我们看到了个友情提问，我们来个友情回答，提交后，就这？<br><img src="https://s1.ax1x.com/2020/05/11/YYQ04s.png" alt=""><br>2）（真是让人摸不着头脑）想想看，我们输入的内容不在前端输出，应该是提交到了后端，那…要是输入一段JS代码，而且存在XSS漏洞，后端管理员登录后是不是会看到弹窗了？试试构造payload<pre><code>&lt;script&gt;alert("咯噔一下弹出来")&lt;/script&gt;</code></pre>3）因为是实验，咱们当一回管理员，登录后台管理界面看看，登录方法平台有提示，主要就是先进入<code>http://xxx.xxx.xxx.xxx/pikachu/vul/xss/xssblind/admin_login.php</code>（端口、文件名啥的根据实际情况改一下就可以进入了，然后根据提示的账号密码登录管理员）<br>4）（咯噔一下，弹窗了）这…谁顶得住啊<br><img src="https://s1.ax1x.com/2020/05/11/YYGllR.png" alt=""><h4 id="XSS之过滤"><a href="#XSS之过滤" class="headerlink" title="XSS之过滤"></a>XSS之过滤</h4>1）好的，又是一个友情提问，咱们来先插入特殊字符试试<br><img src="https://s1.ax1x.com/2020/05/12/YYbYbd.png" alt=""><br>2）<strong>无论面对什么困难，不要害怕，干！就好了，奥利干！</strong><br>3）尝试构造payload<code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code>，发现还是没弹窗，而且观察源码发现输入的<code>&lt;script&gt;</code>标签被过滤掉了<br><img src="https://s1.ax1x.com/2020/05/12/YYzdcq.png" alt=""><br>4）现在要尝试用其他思路注入JS了</li>
-<li><strong>系统转换的思路</strong><ul>
-<li><strong>大小写</strong>，比如<code>&lt;SCRIPT&gt;aLeRT(1)&lt;/sCRIpt&gt;</code>后台可能用正则表达式匹配，但如果正则里面只匹配小写，那就可能被绕过</li>
-<li><strong>双写拼凑</strong>，比如<code>&lt;scri&lt;script&gt;pt&gt;alert(1)&lt;/scri&lt;/script&gt;pt&gt;</code>后台可能把<code>&lt;script&gt;</code>标签去掉，但可能只去掉一次</li>
-<li><strong>注释干扰</strong>，比如<code>&lt;scri&lt;!--test--&gt;pt&gt;alert(1)&lt;/sc&lt;!--test--&gt;ript&gt;</code>加上注释后可能可以绕过后台过滤机制</li>
-</ul>
-</li>
-<li><strong>核心编码思路</strong><ul>
-<li><strong>后台过滤了特殊字符</strong>，比如<code>&lt;script&gt;</code>标签，但该标签可以被各种编码以致不被过滤。接着当浏览器对该编码进行识别时，<strong>会翻译成正常标签</strong>，从而执行</li>
-<li>more and more</li>
-</ul>
-</li>
-</ul>
-<p>5）所以接下来尝试大小写混合的写法，看看能否绕过</p>
-<pre><code>&lt;SCRIPT&gt;alert(1)&lt;/sCRIpt&gt;</code></pre><p>这时成功弹窗了，也说明后端只对小写的<strong>script</strong>进行过滤<br><img src="https://s1.ax1x.com/2020/05/12/YtiO2Q.png" alt=""></p>
-<h4 id="XSS之htmlspecialchars"><a href="#XSS之htmlspecialchars" class="headerlink" title="XSS之htmlspecialchars"></a>XSS之htmlspecialchars</h4><p>1）就是这，开始没注意到<code>htmlspecialchars()</code>这个函数，查查 -&gt; <strong>htmlspecialchars()是PHP里面把预定义的字符转换为HTML实体的函数</strong>，部分如下<br>| 预定义字符转换 | &amp; 转 &amp;amp | “ 转 &amp;quot | ‘ 转 &amp;#039 | &lt; 转 &amp;lt | &gt; 转 &amp;gt |<br>可用引号类型: <code>ENT_COMPAT默认，仅编码双引号</code>，<code>ENT_QUOTES，编码双引号和单引号</code>，<code>ENT_NOQUOTES，不编码任何引号</code><br>2）所以接下来进行猜测，如果输入<code>&lt;&gt;?&amp;"666</code>这些啥的可能会经过HTML编码，然后结合观察xssr_main部分的源码可发现单引号仍可用，所以选择<strong>单引号闭合方式</strong>构造payload</p>
-<pre><code>' onclick=alert(123456) '</code></pre><p>3）提交后点击跳转，看见弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YapPUK.png" alt=""></p>
-<h4 id="XSS之href输出"><a href="#XSS之href输出" class="headerlink" title="XSS之href输出"></a>XSS之href输出</h4><p>1）开始需要我们输入一个常用网站，那就试试<code>www.baidu.com</code><br><img src="https://s1.ax1x.com/2020/05/13/Ya9hmn.png" alt=""> <img src="https://s1.ax1x.com/2020/05/13/YaPLZR.jpg" alt=""><br>2）（我不是，我没有，别瞎说啊）好的，下一步看看源码，发现似乎没啥特别，咱换种输入，比如输入<code>123456</code>，查看源码<br><img src="https://s1.ax1x.com/2020/05/13/YaFX8K.png" alt=""><br>3）输出出现在<strong>a标签的href属性</strong>里面，首先找到pikachu的XSS文件中这个实验文件<strong>xss_03.php</strong>，看看里面都有啥<br><img src="https://s1.ax1x.com/2020/05/13/YaAMOe.png" alt=""><br>4）<strong>分析</strong>，我们输入参数，会先经过判断，如果不是<code>www.baidu.com</code>，就会进行htmlspecialchars转义（ENT_QUOTES则是对单双引号都进行转义了），然后将我们的参数输出到<strong>a标签的href属性</strong>里面<br>5）输出出现在<strong>a标签的href属性</strong>里面，可使用javascript协议来执行js，可构造payload</p>
-<pre><code>javascript:alert(123456)</code></pre><p>提交点击url，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YaVBin.png" alt=""></p>
-<h4 id="XSS之js输出"><a href="#XSS之js输出" class="headerlink" title="XSS之js输出"></a>XSS之js输出</h4><p>1）尝试除了<strong>tmac</strong>，输入其他的基本都显示同一句话，查看页面源码看到p标签好像有个小提示-&gt;<strong>id=”fromjs”</strong>，尝试打开原题文件<strong>xss_04.php</strong>查看<br><img src="https://s1.ax1x.com/2020/05/13/YaeoDO.png" alt=""><br>2）<strong>分析</strong>，我们输入的会被放到JS中，然后经过判断，输出<br>3）<strong>通过闭合方式</strong>构造payload，先用<code>一个单引号和&lt;/script&gt;</code>闭合掉页面开头的<code>&lt;script&gt;</code>，然后插入一段要注入的JS代码，如下</p>
-<pre><code>'&lt;/script&gt;&lt;script&gt;alert("执行一下就弹窗")&lt;/script&gt;</code></pre><p>提交后我们的JS也被执行了，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YautED.png" alt=""></p>
-<ul>
-<li>（总结）<strong>漏洞的输出点是在JS中</strong>，通过用户的输入动态生成了JS代码；而<strong>JS有个特点，它不会对实体编码进行解释</strong>，所以这里如果进行html的实体编码,虽然可以解决XSS的问题,但是<strong>实体编码后的内容,在JS里面不会进行翻译</strong>,这样会导致前端的功能无法使用，所以应在JS的输出点使用<code>\</code>对特殊字符进行转义<h4 id="剩个反射型post，下次一定（以后补充）"><a href="#剩个反射型post，下次一定（以后补充）" class="headerlink" title="剩个反射型post，下次一定（以后补充）"></a>剩个反射型post，下次一定（以后补充）</h4><img src="https://s1.ax1x.com/2020/05/12/YNViVA.jpg" alt=""></li>
-</ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/04/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-  </entry>
-  <entry>
     <title>pikachu漏洞练习平台实验--CSRF</title>
     <url>/2020/05/14/note-3/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介-当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡"><a href="#简介-当然直接看皮卡丘平台上的会更详细ღゝ◡╹-ノ♡" class="headerlink" title="简介|当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡"></a>简介|当然直接看皮卡丘平台上的会更详细ღゝ◡╹)ノ♡</h4><ul>
@@ -162,6 +66,126 @@ document.getElementById("postsubmit").click();
       </script>]]></content>
       <tags>
         <tag>CSRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pikachu漏洞练习平台实验--文件漏洞</title>
+    <url>/2020/05/15/note-4/</url>
+    <content><![CDATA[<h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
+<li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
+<li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
+<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码<h4 id="File-Inclusion-local"><a href="#File-Inclusion-local" class="headerlink" title="File Inclusion(local)"></a>File Inclusion(local)</h4>1）开始是提问，咱们先随便选一个提交，同时查看页面源码，wait<del>wait</del>，直接看到URL，发现有处很特别（url里面有文件名），为了验证，同时查看源码<br><img src="https://s1.ax1x.com/2020/05/14/YD4UoQ.png" alt=""><br><img src="https://s1.ax1x.com/2020/05/14/YD4rQ0.png" alt=""><br>2）撇开这是一个已知目的的实验（俺好像做不到呀），<strong>猜想存在文件包含漏洞</strong>，下一步则是在文件包含的根目录下创建个比如叫<code>test.php</code>文件，写入个<code>phpinfo函数</code>测试就行，如下<pre><code>&lt;?php
+phpinfo();
+?&gt;</code></pre>3）接下来将URL里面的文件名改成要包含的文件名（<strong>即把前面红线划的部分改成test.php</strong>），刷新，成功进入后台<br><img src="https://s1.ax1x.com/2020/05/14/YD7ZUU.png" alt=""><h4 id="File-Inclusion-remote"><a href="#File-Inclusion-remote" class="headerlink" title="File Inclusion(remote)"></a>File Inclusion(remote)</h4>1）开始实验前呢，遇到点小插曲，显示<strong>warning:你的allow_url_include没有打开</strong>，这种情况的话，可以找到<code>php.ini文件</code>（文件位置可以看前面local实验进入后台的php相关信息），然后把找到<code>allow_url_include</code>把Off改成On即可<br>2）ok回到正题，先选然后提交，看看URL有木有什么特别，发现其<strong>对filename传参有了include过滤</strong><br>3）先试试利用php://input协议直接执行php命令，即<code>?filename=php://input</code>，发现跳转回原始界面<br>4）判断<strong>包含远程服务器上的文件，这里直接使用本地服务器模拟</strong>，即直接用上一个实验的<code>test.php</code>文件，把路径写对后传参给filename即可。刷新，成功跳转<br><img src="https://s1.ax1x.com/2020/05/15/YDbXHx.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Unsafe-Filedownload（文件下载漏洞）"><a href="#Unsafe-Filedownload（文件下载漏洞）" class="headerlink" title="Unsafe Filedownload（文件下载漏洞）"></a>Unsafe Filedownload（文件下载漏洞）</h3><h4 id="一丢丢介绍ღゝ◡╹-ノ♡"><a href="#一丢丢介绍ღゝ◡╹-ノ♡" class="headerlink" title="一丢丢介绍ღゝ◡╹)ノ♡"></a>一丢丢介绍ღゝ◡╹)ノ♡</h4><ul>
+<li>平时当我们当点击下载链接，便会向后台发送一个下载请求，一般这个请求会包含一个需要下载的文件名称，后台在收到请求后 会开始执行下载代码，将该文件名对应的文件response给浏览器，从而完成下载</li>
+<li>但如果后台在收到请求的文件名后,不对其进行安全判断就直接进行下载，而此时攻击者提交的不是一个程序预期的的文件名，而是一个精心构造的路径(比如../../../etc/passwd),很有可能后台的敏感信息会被下载，引发信息泄露<h4 id="Unsafe-Filedownload"><a href="#Unsafe-Filedownload" class="headerlink" title="Unsafe Filedownload"></a>Unsafe Filedownload</h4>1）先来点个下载试试（实验才这样搞哈，平时注意安全哈哈），诶嘿发现(☆_☆)下载这些图是<strong>filename直接跳转</strong><br>2）分析出既然可以直接通过filename读取文件，那就可伪造下载链接，在页面源码找到<code>execdownload.php</code>的位置<br>3）下一步则可以构造payload，这里实验为了方便（不是为了图快哦），我直接选择更改图片了（kb.png换成lmx.png的下载路径），成功跳转下载<br><img src="https://s1.ax1x.com/2020/05/15/Ys4izn.png" alt=""><br>4）有时伪造模糊路径的时候，路径没问题了，就可能点击下载的时候会跳转显示文件不存在（其实我也想知道为啥哈哈），不过可以说明的是里面有下载漏洞（即下载的文件路径可伪造）</li>
+</ul>
+<hr>
+<h3 id="Unsafe-Fileupload（文件上传漏洞）"><a href="#Unsafe-Fileupload（文件上传漏洞）" class="headerlink" title="Unsafe Fileupload（文件上传漏洞）"></a>Unsafe Fileupload（文件上传漏洞）</h3><h4 id="一点点介绍ღゝ◡╹-ノ♡"><a href="#一点点介绍ღゝ◡╹-ノ♡" class="headerlink" title="一点点介绍ღゝ◡╹)ノ♡"></a>一点点介绍ღゝ◡╹)ノ♡</h4><ul>
+<li><p>因为业务功能需要，很多 Web 站点都有文件上传的接口，比如网站注册的时候需要上传头像、附件啥的。当用户点击上传按钮后，后台会对上传的文件进行判断 比如是否是指定的类型、后缀名、大小等等，然后将其按照设计的格式进行重命名后存储在指定的目录</p>
+</li>
+<li><p>但如果说后台对上传的文件<strong>没有进行任何的安全判断或者判断条件不够严谨</strong>，则攻击者可能会<strong>上传一些恶意的文件，比如一句木马</strong>，从而导致后台服务器被webshell。所以<strong>对文件的类型、后缀名、大小、上传方式等等的验证</strong>还有<strong>路径的保护</strong>就格外重要了</p>
+<h4 id="client-check（客户端-check）"><a href="#client-check（客户端-check）" class="headerlink" title="client check（客户端 check）"></a>client check（客户端 check）</h4><p>1）开始看到只允许咱们上传图片，试试上传上次写的<code>test.php</code>文件<br><img src="https://s1.ax1x.com/2020/05/15/Ys7dM9.png" alt=""><br>2）打开控制台查看源码，看一下这个限制是不是通过前端完成的<br><img src="https://s1.ax1x.com/2020/05/15/Ys7qzQ.png" alt=""><br>3）分析当<strong>input标签</strong>的状态发生改变时，就会调用<strong>checkFileExt()函数</strong>，以下是该函数执行程序<br><img src="https://s1.ax1x.com/2020/05/15/YsHuFK.png" alt=""><br>4）可以看到<strong>这个函数会判断文件的后缀</strong>是否在<code>jpg、png或gif</code>中，是这些后缀才运行上传<br>5）但是<strong>前端做的限制只是辅助作用</strong>，是可以绕过的，比如<strong>在页面源码找到onchange直接删掉其中的内容</strong>（即直接把那个函数删了），然后继续尝试上传<code>test.php</code>文件，接着可看到<br><img src="https://s1.ax1x.com/2020/05/15/YsbiAP.png" alt=""></p>
+<h4 id="MIME-type（服务端-check）"><a href="#MIME-type（服务端-check）" class="headerlink" title="MIME type（服务端 check）"></a>MIME type（服务端 check）</h4><h5 id="MIME"><a href="#MIME" class="headerlink" title="MIME"></a>MIME</h5></li>
+<li><p>好的，开始前先讲讲什么是MIMI，噢不对，是MIME，不好意思哈哈。MIME是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问时，浏览器会自动使用指定应用程序来打开</p>
+</li>
+<li><p>主要由两部分组成，<strong>前面是数据的大类别</strong>，例如声音audio、图象image等，<strong>后面定义具体的种类</strong>。常见类型有<strong>超文本标记语言、普通文件、RTF文件、GIF图形、JPEG图形等等</strong><br>（还是实验要紧，来）<br>1）开始尝试上传<code>test.php</code>文件，不过可以猜到结果<br><img src="https://s1.ax1x.com/2020/05/15/YsLtT1.png" alt=""><br>2）想一想，是服务器端的处理，尝试开bp抓包，然后修改请求头（就是修改一下<code>Content-Type</code>），比改成<br><img src="https://s1.ax1x.com/2020/05/15/Yy9ukQ.png" alt=""><br>3）然后提交，看到成功上传其他类型的文件<br><img src="https://s1.ax1x.com/2020/05/15/Yy98XV.png" alt=""></p>
+<h4 id="getimagesize"><a href="#getimagesize" class="headerlink" title="getimagesize"></a>getimagesize</h4></li>
+<li><p>（小知识）<strong>getimagesize()函数</strong>将测定任何 GIF，JPG，PNG，SWF，SWC，PSD，TIFF，BMP，IFF，JP2，JPX，JB2，JPC，XBM 或 WBMP 图像文件的大小并返回图像的尺寸以及文件类型及图片高度与宽度，所以绕过此函数需要制作图片马<br>1）开始制作图片马，可用Copy命令制作<code>copy 1.jpg/b + test.php/a 2.jpg</code>（b表示是二进制文件，a表示ASCII码文件），这样制作的图片即内涵木马，又没有损坏<br><img src="https://s1.ax1x.com/2020/05/15/YyZ09U.png" alt=""><br><img src="https://s1.ax1x.com/2020/05/15/YyZDc4.png" alt=""><br>2）接着上传图片，记录显示的文件保存路径，然后利用前面实验的文件包含的漏洞，提交<br><img src="https://s1.ax1x.com/2020/05/15/YymrwR.png" alt=""></p>
+</li>
+<li><p>然后实验到这差不多就结束啦，总而言之，还有很长很长的路要走呢ღゝ◡╹)ノ♡</p>
+</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>File vulnerability</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pikachu漏洞练习平台实验--XSS</title>
+    <url>/2020/05/11/note-2/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li>XSS，实质是一种HTML，是一种发生在Web前端的漏洞，其可用于进行钓鱼攻击、前端js挖矿、盗取用户cookie，甚至对主机进行远程控制等等。而攻击流程，则类似于攻击者将恶意的JS代码通过XSS漏洞插入到论文的某一页面中，当用户访问这个页面时，这个恶意的JS代码就会在用户的浏览器端执行。</li>
+<li>主要原因: 程序中输入和输出的控制不够严格<h4 id="XSS攻击类型"><a href="#XSS攻击类型" class="headerlink" title="XSS攻击类型"></a>XSS攻击类型</h4></li>
+<li>反射型: 又被称为非持久性、参数型XSS。常见的XSS攻击，恶意代码通常在URL地址的请求参数中，且交互的数据一般不会被存在数据库里面，一次性。</li>
+<li>存储型: 又被称为持久型XSS，相比于反射型XSS，其危害性更大大大大大大，甚至可能危害Web服务器本身的安全。常见于评论区、留言，即交互的数据会被存在数据库里面，永久性存储（我慌了，你呢？）</li>
+<li>DOM型: 基于文档对象模型的一种漏洞，是一种通过DOM操作前端代码输出的时候产生的问题，不与后台服务器产生数据交互，一次性，也属于反射型</li>
+<li>危害: 存储型 &gt;&gt; 反射型 &gt; DOM型（等等，为啥有个远大于号？）<h4 id="一丢丢测试流程"><a href="#一丢丢测试流程" class="headerlink" title="一丢丢测试流程"></a>一丢丢测试流程</h4>（1）目标上找输入点，“见框就插”，比如查询接口、留言板啥的<br>（2）输入一组 “特殊字符（&gt;，’，”等）+唯一识别字符” ，点击提交后，查看返回源码，看后端返回的数据是否有处理<br>（3）构造闭合 -&gt; 通过搜索定位到唯一字符，结合唯一字符前后语法确定是否可以构造执行js的条件<br>（4）提交构造的脚本代码（以及各种绕过姿势），看是否可以成功执行，成功执行则说明存在XSS漏洞<br>以下是在pikachu（皮卡丘）漏洞平台瞎捣鼓的小实验，一起来搞啊</li>
+</ul>
+<hr>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>皮卡丘平台有很多（烤！面筋~）瞎说，有很多漏洞类型的实验，这次咱选<code>Cross-Site Scripting</code>进行<br>平台环境搭建可参考: <a href="https://cloud.tencent.com/developer/article/1590950" target="_blank" rel="noopener">pikachu</a> </p>
+<h4 id="反射型XSS（get）"><a href="#反射型XSS（get）" class="headerlink" title="反射型XSS（get）"></a>反射型XSS（get）</h4><p>1）“上去就是见框就插”，先输入特殊字符看看会不会被过滤掉,试试输入&lt;&gt;’’””123啥的<br><img src="https://s1.ax1x.com/2020/05/11/YJKGkR.png" alt=""><br>2）看来是被过滤掉了，那通过查看页面源码可以发现，我们输入的内容到了p标签里面，接着试试用JS代码，看是否还是被过滤，payload可如下</p>
+<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><p>3）但发现前端对输入做了长度限制，则需要在页面源码处找到maxlength修改一下，再次插入提交发现<br><img src="https://s1.ax1x.com/2020/05/11/YJQbOU.png" alt=""><br>成功弹窗了，在页面源码也可发现输入的payload嵌入了p标签且被正确执行<br><strong>这是个GET型XSS漏洞，将带有XSS的URL伪装后发送给目标，从前端输入，由后端接受再输出</strong></p>
+<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4><ul>
+<li><strong>存储型XSS和反射型XSS形成原因是一样的，不同的则是存储型XSS下攻击者可以将脚本注入到后台存储起来，构成更加持久的危害（这就有点难顶了）</strong><br>1）我们先试试在平台给出的实验留言框中输入一下特殊字符，看看是否存在过滤，尝试后发现输入内容当作留言且直接输出了<br><img src="https://s1.ax1x.com/2020/05/11/YJjTdH.png" alt=""><br>2）只能查看页面源码，发现输入的东西被直接放在p标签了，没有经过任何转义处理，输入payload测试<pre><code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code></pre><img src="https://s1.ax1x.com/2020/05/11/YJvx91.png" alt=""><br>成功弹窗了，原理也是和反射型的差不多，只是这种XSS的持久危害性较大<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4>1）可以将DOM理解为访问HTML的标准接口，而DOM里面会把我们的HTML分成一个DOM树，以这棵树为入口，通过DOM的某些方法对树进行操作（增删改标签啥的），所以DOM也相当于在前端提供了一个<strong>通过JS去对HTML进行操作的接口</strong><br>2）而造成DOM型XSS的原因则是前端的输入被DOM给获取到了，通过DOM又在前端输出，跟反射型和存储型比起来，它是不经过后台交互的<br>3）等等？快进入正题，不能瞎扯<br>依然是老套路，上去先插一小段特殊字符提交一下，what do you see?又是跳转403，又是没反应的，决定观察页面源码，找到<strong>xssd_main</strong>部分<br><img src="https://s1.ax1x.com/2020/05/11/YYE39S.png" alt=""></li>
+<li>这里有段JS代码，它通过 getElementById 获取标签 Id 为 text 的内容赋值给 str ，然后把 str 的内容通过字符串拼接的方式写到了 a 标签的 href 属性中，a 标签会写到 Id 为 dom 的 div 标签中（呼~~真是让人难顶的代码分析）<strong>通过闭合方式</strong>构造个payload试试吧，如下<pre><code>#' onclick=alert("看不见我看不见我")&gt;</code></pre>点击一下，我看见你啦φ(≧ω≦*)♪，成功弹窗<br><img src="https://s1.ax1x.com/2020/05/11/YYeogU.png" alt=""><h4 id="DOM型XSS-X"><a href="#DOM型XSS-X" class="headerlink" title="DOM型XSS-X"></a>DOM型XSS-X</h4>1）<strong>请说出宁的伤心往事？</strong>随缘输入一段内容，出现一可选项，click一下，又来一个，click第两下，啥？404了，莫得想法了，查看源码<br><img src="https://s1.ax1x.com/2020/05/11/YYuA9P.png" alt=""><br>2）又来到了分析时间（我拒绝，不是），看到<strong>xssd_main</strong>里面那段JS代码，一个domxss函数，利用<strong>window.location.search</strong>获取浏览器URL内容， 赋值到str，ok下面不会了，游戏结束<br>3）（港咩啊，查查呗）然后是经过URL解码和字符串分隔，取出URL中的参数内容，再把 “+” 替换为 “ ”（空格），赋值给 xss，最后把 xss 拼接到 a 标签中，然后写到 Id 为 dom 的 div 标签中，<strong>来了划重点</strong>: 跟前面的DOM不同，它的输入是从浏览器的URL中获取的，就像反射型XSS(get)<br>4）<strong>通过闭合方式</strong>构造payload，比如<pre><code>#' onclick=alert("求求宁给俺弹个窗吧")&gt;</code></pre>口中默念，3、2、1、点火起飞（瞎说啥），成功弹窗了<br><img src="https://s1.ax1x.com/2020/05/11/YYM9JI.png" alt=""><h4 id="XSS之盲打"><a href="#XSS之盲打" class="headerlink" title="XSS之盲打"></a>XSS之盲打</h4>1）好的我们看到了个友情提问，我们来个友情回答，提交后，就这？<br><img src="https://s1.ax1x.com/2020/05/11/YYQ04s.png" alt=""><br>2）（真是让人摸不着头脑）想想看，我们输入的内容不在前端输出，应该是提交到了后端，那…要是输入一段JS代码，而且存在XSS漏洞，后端管理员登录后是不是会看到弹窗了？试试构造payload<pre><code>&lt;script&gt;alert("咯噔一下弹出来")&lt;/script&gt;</code></pre>3）因为是实验，咱们当一回管理员，登录后台管理界面看看，登录方法平台有提示，主要就是先进入<code>http://xxx.xxx.xxx.xxx/pikachu/vul/xss/xssblind/admin_login.php</code>（端口、文件名啥的根据实际情况改一下就可以进入了，然后根据提示的账号密码登录管理员）<br>4）（咯噔一下，弹窗了）这…谁顶得住啊<br><img src="https://s1.ax1x.com/2020/05/11/YYGllR.png" alt=""><h4 id="XSS之过滤"><a href="#XSS之过滤" class="headerlink" title="XSS之过滤"></a>XSS之过滤</h4>1）好的，又是一个友情提问，咱们来先插入特殊字符试试<br><img src="https://s1.ax1x.com/2020/05/12/YYbYbd.png" alt=""><br>2）<strong>无论面对什么困难，不要害怕，干！就好了，奥利干！</strong><br>3）尝试构造payload<code>&lt;script&gt;alert("Hello?")&lt;/script&gt;</code>，发现还是没弹窗，而且观察源码发现输入的<code>&lt;script&gt;</code>标签被过滤掉了<br><img src="https://s1.ax1x.com/2020/05/12/YYzdcq.png" alt=""><br>4）现在要尝试用其他思路注入JS了</li>
+<li><strong>系统转换的思路</strong><ul>
+<li><strong>大小写</strong>，比如<code>&lt;SCRIPT&gt;aLeRT(1)&lt;/sCRIpt&gt;</code>后台可能用正则表达式匹配，但如果正则里面只匹配小写，那就可能被绕过</li>
+<li><strong>双写拼凑</strong>，比如<code>&lt;scri&lt;script&gt;pt&gt;alert(1)&lt;/scri&lt;/script&gt;pt&gt;</code>后台可能把<code>&lt;script&gt;</code>标签去掉，但可能只去掉一次</li>
+<li><strong>注释干扰</strong>，比如<code>&lt;scri&lt;!--test--&gt;pt&gt;alert(1)&lt;/sc&lt;!--test--&gt;ript&gt;</code>加上注释后可能可以绕过后台过滤机制</li>
+</ul>
+</li>
+<li><strong>核心编码思路</strong><ul>
+<li><strong>后台过滤了特殊字符</strong>，比如<code>&lt;script&gt;</code>标签，但该标签可以被各种编码以致不被过滤。接着当浏览器对该编码进行识别时，<strong>会翻译成正常标签</strong>，从而执行</li>
+<li>more and more</li>
+</ul>
+</li>
+</ul>
+<p>5）所以接下来尝试大小写混合的写法，看看能否绕过</p>
+<pre><code>&lt;SCRIPT&gt;alert(1)&lt;/sCRIpt&gt;</code></pre><p>这时成功弹窗了，也说明后端只对小写的<strong>script</strong>进行过滤<br><img src="https://s1.ax1x.com/2020/05/12/YtiO2Q.png" alt=""></p>
+<h4 id="XSS之htmlspecialchars"><a href="#XSS之htmlspecialchars" class="headerlink" title="XSS之htmlspecialchars"></a>XSS之htmlspecialchars</h4><p>1）就是这，开始没注意到<code>htmlspecialchars()</code>这个函数，查查 -&gt; <strong>htmlspecialchars()是PHP里面把预定义的字符转换为HTML实体的函数</strong>，部分如下<br>| 预定义字符转换 | &amp; 转 &amp;amp | “ 转 &amp;quot | ‘ 转 &amp;#039 | &lt; 转 &amp;lt | &gt; 转 &amp;gt |<br>可用引号类型: <code>ENT_COMPAT默认，仅编码双引号</code>，<code>ENT_QUOTES，编码双引号和单引号</code>，<code>ENT_NOQUOTES，不编码任何引号</code><br>2）所以接下来进行猜测，如果输入<code>&lt;&gt;?&amp;"666</code>这些啥的可能会经过HTML编码，然后结合观察xssr_main部分的源码可发现单引号仍可用，所以选择<strong>单引号闭合方式</strong>构造payload</p>
+<pre><code>' onclick=alert(123456) '</code></pre><p>3）提交后点击跳转，看见弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YapPUK.png" alt=""></p>
+<h4 id="XSS之href输出"><a href="#XSS之href输出" class="headerlink" title="XSS之href输出"></a>XSS之href输出</h4><p>1）开始需要我们输入一个常用网站，那就试试<code>www.baidu.com</code><br><img src="https://s1.ax1x.com/2020/05/13/Ya9hmn.png" alt=""> <img src="https://s1.ax1x.com/2020/05/13/YaPLZR.jpg" alt=""><br>2）（我不是，我没有，别瞎说啊）好的，下一步看看源码，发现似乎没啥特别，咱换种输入，比如输入<code>123456</code>，查看源码<br><img src="https://s1.ax1x.com/2020/05/13/YaFX8K.png" alt=""><br>3）输出出现在<strong>a标签的href属性</strong>里面，首先找到pikachu的XSS文件中这个实验文件<strong>xss_03.php</strong>，看看里面都有啥<br><img src="https://s1.ax1x.com/2020/05/13/YaAMOe.png" alt=""><br>4）<strong>分析</strong>，我们输入参数，会先经过判断，如果不是<code>www.baidu.com</code>，就会进行htmlspecialchars转义（ENT_QUOTES则是对单双引号都进行转义了），然后将我们的参数输出到<strong>a标签的href属性</strong>里面<br>5）输出出现在<strong>a标签的href属性</strong>里面，可使用javascript协议来执行js，可构造payload</p>
+<pre><code>javascript:alert(123456)</code></pre><p>提交点击url，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YaVBin.png" alt=""></p>
+<h4 id="XSS之js输出"><a href="#XSS之js输出" class="headerlink" title="XSS之js输出"></a>XSS之js输出</h4><p>1）尝试除了<strong>tmac</strong>，输入其他的基本都显示同一句话，查看页面源码看到p标签好像有个小提示-&gt;<strong>id=”fromjs”</strong>，尝试打开原题文件<strong>xss_04.php</strong>查看<br><img src="https://s1.ax1x.com/2020/05/13/YaeoDO.png" alt=""><br>2）<strong>分析</strong>，我们输入的会被放到JS中，然后经过判断，输出<br>3）<strong>通过闭合方式</strong>构造payload，先用<code>一个单引号和&lt;/script&gt;</code>闭合掉页面开头的<code>&lt;script&gt;</code>，然后插入一段要注入的JS代码，如下</p>
+<pre><code>'&lt;/script&gt;&lt;script&gt;alert("执行一下就弹窗")&lt;/script&gt;</code></pre><p>提交后我们的JS也被执行了，出现弹窗<br><img src="https://s1.ax1x.com/2020/05/13/YautED.png" alt=""></p>
+<ul>
+<li>（总结）<strong>漏洞的输出点是在JS中</strong>，通过用户的输入动态生成了JS代码；而<strong>JS有个特点，它不会对实体编码进行解释</strong>，所以这里如果进行html的实体编码,虽然可以解决XSS的问题,但是<strong>实体编码后的内容,在JS里面不会进行翻译</strong>,这样会导致前端的功能无法使用，所以应在JS的输出点使用<code>\</code>对特殊字符进行转义<h4 id="剩个反射型post，下次一定（以后补充）"><a href="#剩个反射型post，下次一定（以后补充）" class="headerlink" title="剩个反射型post，下次一定（以后补充）"></a>剩个反射型post，下次一定（以后补充）</h4><img src="https://s1.ax1x.com/2020/05/12/YNViVA.jpg" alt=""></li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <tags>
+        <tag>XSS</tag>
       </tags>
   </entry>
   <entry>
@@ -233,39 +257,6 @@ document.getElementById("postsubmit").click();
       </tags>
   </entry>
   <entry>
-    <title>pikachu漏洞练习平台实验--文件漏洞</title>
-    <url>/2020/05/13/note-4/</url>
-    <content><![CDATA[<h3 id="File-Inclusion（文件包含漏洞）"><a href="#File-Inclusion（文件包含漏洞）" class="headerlink" title="File Inclusion（文件包含漏洞）"></a>File Inclusion（文件包含漏洞）</h3><h4 id="简介ღゝ◡╹-ノ♡"><a href="#简介ღゝ◡╹-ノ♡" class="headerlink" title="简介ღゝ◡╹)ノ♡"></a>简介ღゝ◡╹)ノ♡</h4><ul>
-<li>在 Web 后台开发中，程序员往往为了提高效率以及让代码看起来更加简洁，会使用 “包含” 函数功能。比如把一系列功能函数都写进<code>function.php</code>中，之后当某个文件需要调用的时候直接在文件头中写上一句<code>&lt;?php include function.php?&gt;</code>就可以调用函数。但有些时候，因为网站功能需求，会让前端用户选择需要包含的文件（或者在前端的功能中使用了“包含”功能），又由于开发人员没有对要包含的这个文件进行安全考虑，就导致攻击者可以通过修改文件的位置来让后台执行任意文件（代码）。<ul>
-<li>本地文件包含，<strong>仅能够对服务器本地的文件进行包含</strong>，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息</li>
-<li>远程文件包含，<strong>能够通过url地址对远程的文件进行包含</strong>，这意味着攻击者可以传入任意的代码</li>
-</ul>
-</li>
-</ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>]]></content>
-      <tags>
-        <tag>File vulnerability</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>第一次攻击实验</title>
     <url>/2020/04/15/ok/</url>
     <content><![CDATA[<p>实验:metasploit下利用”永恒之蓝”攻击win7<br>(准备阶段，win7虚拟机，kali linux系统)<br>实验声明:网络不是法外之地~~</p>
@@ -305,5 +296,37 @@ document.getElementById("postsubmit").click();
       <tags>
         <tag>experiment</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/04/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
   </entry>
 </search>
